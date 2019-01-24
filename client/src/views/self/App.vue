@@ -17,6 +17,8 @@
 
 <script>
 import tableWrapper from '../common/tableWrapper'
+import { mapMutations } from 'vuex'
+
 export default {
     name: 'App',
     data () {
@@ -34,12 +36,16 @@ export default {
     },
 
     methods: {
+        ...mapMutations({
+            setCompany: 'setCompany'
+        }),
         showCompanyDetail(data){
             console.log(data)
+            this.setCompany({name: data.name, code: data.code})
             this.$router.push({
                 path: `/self/${data.code}`
             })
-        }
+        },
     },
 
 }

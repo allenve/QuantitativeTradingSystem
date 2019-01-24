@@ -29,6 +29,7 @@ import './assets/css/reset.css'
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

@@ -154,7 +154,7 @@ export default class Enum {
             for (let i in this.valueIndex) {
                 // 由于`value`不一定是连续的，所以一定要去除空项
                 if (this.valueIndex.hasOwnProperty(i) && this.valueIndex[i]) {
-                    array.push(_.clone(this.valueIndex[i]));
+                    array.push(this.valueIndex[i]);
                 }
             }
         }

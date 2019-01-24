@@ -1,11 +1,13 @@
 <!-- k线图 -->
 <template>
     <div class='kChart'>
-        <div id="myChart" :style="{width: '800px', height: '600px'}"></div>
+        <div id="myChart" :style="{width: '600px', height: '450px'}"></div>
     </div>
 </template>
 
 <script>
+    import { mapState } from 'vuex'
+
     export default {
         name: 'kChart',
         data() {
@@ -13,13 +15,30 @@
         },
 
         props: {
-            rawData: Object
+            stockDataId: String
         },
 
         components: {},
-
+        computed: {
+            ...mapState({
+                id: state => state.stock.id,
+                values: state => state.stock.values,
+                categoryData: state => state.stock.categoryData,
+                volumes: state => state.stock.volumes
+            })
+        },
         mounted() {
-            this.setOption(this.rawData);
+            console.log("begin show chart");
+            if(this.id === this.stockDataId) {
+                this.setOption({
+                    values: this.values,
+                    categoryData: this.categoryData,
+                    volumes: this.volumes
+                });
+            } else {
+                console.log("id is not ture");
+            }
+            
         },
         methods: {
             setOption(rawData) {
@@ -34,6 +53,7 @@
                         left: 'center',
                         data: ['Dow-Jones index', 'MA5', 'MA10', 'MA20', 'MA30']
                     },
+                    // 是否显示提示框组件
                     tooltip: {
                         trigger: 'axis',
                         axisPointer: {
@@ -52,8 +72,9 @@
                             };
                             obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
                             return obj;
-                        }
-                        // extraCssText: 'width: 170px'
+                        },
+                        // 额外附加到浮层的 css 样式
+                        extraCssText: 'width: 170px'
                     },
                     axisPointer: {
                         link: {
@@ -285,7 +306,7 @@
 
 <style scoped lang='less'>
     .kChart {
-        width: 800px;
+        width: 600px;
         height: auto;
         margin: 0 auto;
     }

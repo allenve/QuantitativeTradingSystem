@@ -18,32 +18,29 @@
                     <Date-picker v-model="endTime" type="date" size="small" placeholder="结束时间" :options="endDataOption" style="width: 120px"></Date-picker>
                 </span>
                 <span><input class="submit" type="button" value="K线图" @click="showChartByTime"></span>
-                <span><input class="backTest" type="button" value="开始回测"></span>
+                <span><input class="backTest" type="button" value="开始回测" @click="startBackTest"></span>
             </div>
             <div class="chart">
-                <k-chart v-if="isShowKChart" :rawData="stockData" />
+                <k-chart v-if="isShowKChart" :stockDataId="stockDataId" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import {
-        COMPANY
-    } from '../../common/utils.js'
+    import { COMPANY } from '../../common/utils.js'
     import timeUtils from '../../common/timeUtils.js'
     import pageHeader from '../../common/pageHeader'
     import kChart from '../../common/kChart'
+    import { mapState, mapMutations } from 'vuex'
 
-    const DAY = 86400000
+    const DAY = 86400000;
 
     export default {
         name: 'companyDetail',
         data() {
             return {
-                companyName: '', // 公司名称
-                companyCode: '', // 公司股票代码
-                startTime: new Date(Date.now() - DAY * 365), //默认开始时间 一年前
+                startTime: new Date(Date.now() - DAY * 365 * 5), //默认开始时间 五年前
                 endTime: new Date(Date.now()), // 默认结束时间
                 startDataOption: {
                     disabledDate(date) {
@@ -56,7 +53,7 @@
                     }
                 }, // 结束时间不可选配置
                 isShowKChart: false,
-                stockData: {}
+                stockDataId: ''
             };
         },
 
@@ -70,29 +67,49 @@
         },
 
         mounted() {
-            let code = this.$route.params.id;
-            this.companyCode = code;
-            this.companyName = COMPANY.getTextFromAlias(code);
+            // let code = this.$route.params.id;
+            // this.companyCode = code;
+            if(this.companyCode && this.companyName) {
+                this.isShowKChart = false;
+                setTimeout(() => {
+                    this.showChartByTime()
+                }, 500)
+            }else {
+                this.$routerBack();
+            }
+            
         },
 
+        computed: {
+            ...mapState({
+                companyName: state => state.company.name,
+                companyCode: state => state.company.code
+            })
+        },
         methods: {
+            // 获取k线图数据
             showChartByTime() {
                 console.log(this.startTime);
+                this.isShowKChart = false;
+
                 let req = {
                     code: this.companyCode,
                     start: timeUtils.toDate(this.startTime),
                     end: timeUtils.toDate(this.endTime)
                 }
-
+                this.$loading();
                 this.$api.post('/quan/getStockData/', req).then(res => {
                     console.log(res);
                     this.showChart(this.initData(res.data))
+                    this.$closeToast();
                 })
 
 
             },
+            // 初始化数据
             initData(data) {
                 let rawData = {
+                    id: this.$GenNonDuplicateID(),
                     values: [],
                     categoryData: [],
                     volumes: []
@@ -103,12 +120,22 @@
                     rawData.categoryData.push(this.$getLocalTime(Number(item), true))
                     rawData.volumes.push([i, row['Volume'], Number(row['Open']) > Number(row['Close']) ? 1 : -1])
                 })
+                
+                this.setStockData(rawData);
                 return rawData;
             },
+            ...mapMutations({
+                setStockData: 'setStockData'
+            }),
+            // 显示k线图
             showChart(rawData){
                 console.log(rawData);
-                this.stockData = rawData;
+                this.stockDataId = rawData.id;
                 this.isShowKChart = true;
+            },
+            // 开始回测
+            startBackTest() {
+                this.$router.push("/backtest");
             }
         },
 

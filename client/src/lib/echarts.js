@@ -1,8 +1,8 @@
-import ECharts from 'vue-echarts/components/ECharts'
+// // import ECharts from 'vue-echarts/components/ECharts'
 
 
-export default {
-    install(Vue) {
-        Vue.component('chart', ECharts)
-    }
-  }
+// export default {
+//     install(Vue) {
+//         Vue.component('chart', ECharts)
+//     }
+//   }

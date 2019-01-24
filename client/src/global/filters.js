@@ -57,6 +57,25 @@ let filters = {
             return month + "-" + date;
         }
         
+    },
+    routerBack() {
+        this.$Message.destroy();
+        this.$router.back();
+    },
+    // 显示loading
+    loading(text) {
+        this.$Message.loading({
+            content: text || 'Loading...',
+            duration: 0
+        });
+    },
+    // 关闭提示窗
+    closeToast() {
+        this.$Message.destroy();
+    },
+    // 生成随机id
+    GenNonDuplicateID() {
+        return Math.random().toString(36).substr(3) + Date.now().toString(36);
     }
 
 }
@@ -71,6 +90,10 @@ export default {
         Vue.prototype.hasClass = filters.hasClass
         Vue.prototype.addClass = filters.addClass
         Vue.prototype.removeClass = filters.removeClass
+        Vue.prototype.$loading = filters.loading
+        Vue.prototype.$closeToast = filters.closeToast
+        Vue.prototype.$routerBack = filters.routerBack
+        Vue.prototype.$GenNonDuplicateID = filters.GenNonDuplicateID
 
     }
 }

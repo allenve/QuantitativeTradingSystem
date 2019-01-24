@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import 'echarts/lib/chart/line'
+// import 'echarts/lib/chart/line'
 
     export default {
         name: 'App',

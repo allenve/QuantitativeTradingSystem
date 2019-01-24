@@ -22,7 +22,7 @@
 
         methods: {
             back() {
-                this.$router.back();
+                this.$routerBack();
             }
         },
 
@@ -42,9 +42,10 @@
             position: absolute;
             top: 0;
             right: 20px;
+            transition: .2s right ease-in-out;
             &:hover{
-                transform: scale(0.9);
                 font-weight: 500;
+                right: 10px;
             }
         }
     }
