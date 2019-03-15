@@ -30,51 +30,7 @@ def run_loop_back(read_cash, buy_factors, sell_factors, stock_picks=None, choice
                   commission_dict=None,
                   n_process_kl=None,
                   n_process_pick=None):
-    """
-    封装执行择时，选股回测。
 
-    推荐在使用abu.run_loop_back()函数进行全市场回测前使用abu.run_kl_update()函数首先将数据进行更新，
-    在run_kl_update()中它会首选强制使用网络数据进行更新，在更新完毕后，更改数据获取方式为本地缓存，
-    使用abu.run_kl_update()的好处是将数据更新与策略回测分离，在运行效率及问题排查上都会带来正面的提升
-
-    :param read_cash: 初始化资金额度，eg：1000000
-    :param buy_factors: 回测使用的买入因子策略序列，
-                    eg：
-                        buy_factors = [{'xd': 60, 'class': AbuFactorBuyBreak},
-                                       {'xd': 42, 'class': AbuFactorBuyBreak}]
-    :param sell_factors: 回测使用的卖出因子序列，
-                    eg:
-                        sell_factors = [{'stop_loss_n': 0.5, 'stop_win_n': 3.0, 'class': AbuFactorAtrNStop},
-                                        {'pre_atr_n': 1.0, 'class': AbuFactorPreAtrNStop},
-                                        {'close_atr_n': 1.5, 'class': AbuFactorCloseAtrNStop},]
-    :param stock_picks: 回测使用的选股因子序列：
-                    eg:
-                        stock_pickers = [{'class': AbuPickRegressAngMinMax,
-                                          'threshold_ang_min': 0.0, 'reversed': False},
-                                         {'class': AbuPickStockPriceMinMax,
-                                          'threshold_price_min': 50.0,
-                                          'reversed': False}]
-    :param choice_symbols: 备选股票池, 默认为None，即使用abupy.env.g_market_target的市场类型进行全市场回测，
-                           为None的情况下为symbol序列
-                    eg:
-                        choice_symbols = ['usNOAH', 'usSFUN', 'usBIDU', 'usAAPL', 'usGOOG',
-                                          'usTSLA', 'usWUBA', 'usVIPS']
-    :param n_folds: int, 回测n_folds年的历史数据
-    :param start: 回测开始的时间, str对象, eg: '2013-07-10'
-    :param end: 回测结束的时间, str对象 eg: '2016-07-26'
-    :param commission_dict: 透传给AbuCapital，自定义交易手续费的时候时候。
-                    eg：
-                        def free_commission(trade_cnt, price):
-                            # 免手续费
-                            return 0
-                        commission_dict = {'buy_commission_func': free_commission,
-                                         'sell_commission_func': free_commission}
-                        AbuCapital(read_cash, benchmark, user_commission_dict=commission_dict)
-
-    :param n_process_kl: 金融时间序列数据收集启动并行的进程数，默认None, 内部根据cpu数量分配
-    :param n_process_pick: 择时与选股操作启动并行的进程数，默认None, 内部根据cpu数量分配
-    :return: (AbuResultTuple对象, AbuKLManager对象)
-    """
     if start is not None and end is not None and ABuDateUtil.date_str_to_int(end) - ABuDateUtil.date_str_to_int(
             start) <= 0:
         logging.info('end date <= start date!!')
@@ -115,10 +71,12 @@ def run_loop_back(read_cash, buy_factors, sell_factors, stock_picks=None, choice
     kl_pd_manager = AbuKLManager(benchmark, capital)
     # 批量获取择时kl数据
     kl_pd_manager.batch_get_pick_time_kl_pd(choice_symbols, n_process=n_process_kl)
+    print("run kl_pd_manager.batch_get_pick_time_kl_pd()")
+    # print(kl_pd_manager.__getitem__('usBIDU'))
 
     # 在择时之前清理一下输出, 不能wait, windows上一些浏览器会卡死
     ABuProgress.do_clear_output(wait=False)
-
+    print("run ABuProgress.do_clear_output()")
     # 择时策略运行，多进程方式
     orders_pd, action_pd, all_fit_symbols_cnt = AbuPickTimeMaster.do_symbols_with_same_factors_process(
         choice_symbols, benchmark,
@@ -126,10 +84,15 @@ def run_loop_back(read_cash, buy_factors, sell_factors, stock_picks=None, choice
         n_process_pick_time=n_process_pick)
 
     # 都完事时检测一下还有没有ui进度条
-    ABuProgress.do_check_process_is_dead()
+    # ABuProgress.do_check_process_is_dead()
 
     # 返回namedtuple， ('orders_pd', 'action_pd', 'capital', 'benchmark')
     abu_result = AbuResultTuple(orders_pd, action_pd, capital, benchmark)
+
+    print("---------------------------------------------------abu_result")
+    print(abu_result)
+    print("---------------------------------------------------kl_pd_manager")
+    print(kl_pd_manager)
     # store_abu_result_tuple(abu_result, n_folds)
     return abu_result, kl_pd_manager
 

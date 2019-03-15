@@ -45,8 +45,8 @@ class PickleStateMixin(object):
     skip_abupy_version = True
 
     def __getstate__(self):
-        from .. import __version__
-        _abupy_version = __version__
+        _abupy_version = '1.0.0'
+        
         self.pick_extend_work()
         return dict(self.__dict__.items(), _abupy_version=_abupy_version,
                     _pickle_highest_protocol=self._pickle_highest_protocol,
@@ -68,9 +68,6 @@ class PickleStateMixin(object):
         if self.skip_abupy_version:
             # 忽略abupy的版本号
             _abupy_version = old_abupy_version
-        else:
-            from .. import __version__
-            _abupy_version = __version__
 
         if self._pickle_highest_protocol != pickle_highest_protocol \
                 or _abupy_version != old_abupy_version or self._python_version != python_version \

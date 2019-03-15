@@ -24,6 +24,7 @@ Vue.use(api)
 
 //自定义css
 import './assets/css/reset.css'
+import './assets/css/common.less'
 
 /* eslint-disable no-new */
 new Vue({

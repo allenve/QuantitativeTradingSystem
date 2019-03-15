@@ -38,6 +38,7 @@ def strategyTrade(request):
     data = trend_break.run_factor_plot(stock)
     resp = {
         "success": "ok",
+        "code": 200,
         "data": data
     }
     return resp

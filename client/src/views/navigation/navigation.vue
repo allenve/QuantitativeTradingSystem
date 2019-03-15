@@ -37,7 +37,7 @@ export default {
     top: 0;
     height: 40px;
     line-height: 40px;
-    background: #f6f6f6;
+    background: #07111b;
     box-shadow: 0 5px 4px #ccc;
     ul{
         float: right;
@@ -46,9 +46,10 @@ export default {
             display: inline-block;
             padding: 0 10px;
             font-size: 0.8rem;
-            color: #666;
+            // color: #666;
+            color: rgba(255,255,255,.6);
             &.router-link-active{
-                color: #000;
+                color: #fff;
                 font-weight: 500;
             }
         }

@@ -76,6 +76,15 @@ let filters = {
     // 生成随机id
     GenNonDuplicateID() {
         return Math.random().toString(36).substr(3) + Date.now().toString(36);
+    },
+    // 获取用户信息
+    getUserInfo() {
+        let user_data = JSON.parse(sessionStorage.getItem('user_data'));
+        if (user_data) {
+            return user_data;
+        }else {
+            this.$router.push("/my/login");
+        }
     }
 
 }
@@ -94,6 +103,7 @@ export default {
         Vue.prototype.$closeToast = filters.closeToast
         Vue.prototype.$routerBack = filters.routerBack
         Vue.prototype.$GenNonDuplicateID = filters.GenNonDuplicateID
+        Vue.prototype.$getUserInfo = filters.getUserInfo
 
     }
 }

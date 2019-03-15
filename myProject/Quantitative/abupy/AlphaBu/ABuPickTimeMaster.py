@@ -69,9 +69,10 @@ class AbuPickTimeMaster(object):
             # TODO 需要区分hdf5和csv不同存贮情况，csv存贮模式下可以并行读写
             # 因为上面已经并行或者单进程进行数据采集kl_pd_manager，之后的并行，为确保hdf5不会多进程读写设置LOCAL
             ABuEnv.g_data_fetch_mode == EMarketDataFetchMode.E_DATA_FETCH_FORCE_LOCAL
-
         # do_symbols_with_same_factors被装饰器add_process_env_sig装饰，需要进程间内存拷贝对象AbuEnvProcess
         p_nev = AbuEnvProcess()
+
+        print("--------------------------------")
         # 每个并行的进程通过do_symbols_with_same_factors及自己独立的子序列独立工作，注意kl_pd_manager装载了所有需要的数据
         out = parallel(delayed(do_symbols_with_same_factors)(choice_symbols, benchmark, buy_factors, sell_factors,
                                                              capital, apply_capital=False,
@@ -79,6 +80,7 @@ class AbuPickTimeMaster(object):
                                                              show_progress=show_progress)
                        for choice_symbols in process_symbols)
         # 择时并行结束后恢复之前的数据获取模式
+        print("parallel end")
         ABuEnv.g_data_fetch_mode = tmp_fetch_mode
         orders_pd = None
         action_pd = None

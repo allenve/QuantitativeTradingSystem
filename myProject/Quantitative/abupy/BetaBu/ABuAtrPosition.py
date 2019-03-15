@@ -46,7 +46,23 @@ class AbuAtrPosition(AbuPositionBase):
         # 最大仓位限制
         atr_pos = self.pos_max if atr_pos > self.pos_max else atr_pos
         # 结果是买入多少个单位（股，手，顿，合约）
-        return self.read_cash * atr_pos / self.bp * self.deposit_rate
+        print("===================================================")
+        import sys
+        print("sys.version")
+        print(sys.version)
+        import numpy
+        print(numpy.__version__)
+        print("---------------------------------------------------")
+        print(self.read_cash)
+        print(atr_pos)
+        print(self.bp)
+        print(self.deposit_rate)
+        print(">>>>>>>>")
+        testdata = float(self.read_cash) * atr_pos / self.bp * self.deposit_rate
+        print(testdata)
+        print("<<<<")
+        # return float(self.read_cash) * atr_pos / self.bp * self.deposit_rate
+        return 1
 
     def _init_self(self, **kwargs):
         """atr仓位控制管理类初始化设置"""

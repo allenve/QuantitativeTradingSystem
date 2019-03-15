@@ -24,9 +24,15 @@ ajax.interceptors.request.use(config => {
 ajax.interceptors.response.use(response => {
   let res = response.data
   if (response.status === 200) {
+    if (res.code == 2001) {
+      alert(res.data.msg);
+      sessionStorage.clear();
+      window.location.replace('#/my/login');
+    }
     return Promise.resolve(res)
+    
   } else {
-    alert(res.errMsg)
+    alert('error')
     return Promise.resolve()
   }
 }, err => {

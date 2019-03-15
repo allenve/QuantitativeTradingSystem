@@ -23,6 +23,8 @@ from ..TradeBu.ABuKLManager import AbuKLManager
 from ..TradeBu.ABuCapital import AbuCapital
 from ..TradeBu import ABuTradeExecute
 
+from Quantitative.common.StockResult import StockResult
+
 
 __author__ = '阿布'
 __weixin__ = 'abu_quant'
@@ -82,6 +84,15 @@ class AbuMetricsBase(object):
         self.orders_pd = orders_pd
         self.action_pd = action_pd
         self.benchmark = benchmark
+
+        print("self.capital----------------------------------")
+        print(self.capital)
+        print("self.orders_pd----------------------------------")
+        print(self.orders_pd)
+        print("self.action_pd----------------------------------")
+        print(self.action_pd)
+        print("self.benchmark----------------------------------")
+        print(self.benchmark)
         """
             满仓乘数，如果设置为True, 针对度量信息如收益等需要除self.stocks_full_rate_factor
         """
@@ -91,9 +102,12 @@ class AbuMetricsBase(object):
         if self.orders_pd is not None and self.capital is not None and 'capital_blance' in self.capital.capital_pd:
             self.valid = True
         # ipython notebook下使用logging.info
-        self.log_func = logging.info if ABuEnv.g_is_ipython else print
 
-    @valid_check
+        # self.stockResult = StockResult()
+        self.log_func = logging.info if ABuEnv.g_is_ipython else print
+        # self.log_func = self.stockResult.pushStockResult
+
+    # @valid_check
     def fit_metrics(self):
         """执行所有度量函数"""
         # TODO 根据ORDER数量大于一定阀值启动进度条
@@ -113,6 +127,9 @@ class AbuMetricsBase(object):
 
     def _metrics_base_stats(self):
         """度量真实成交了的capital_pd，即涉及资金的度量"""
+        print("================================================")
+        print("self.capital.capital_pd:")
+        print(self.capital.capital_pd)
         # 平均资金利用率
         self.cash_utilization = 1 - (self.capital.capital_pd.cash_blance /
                                      self.capital.capital_pd.capital_blance).mean()
@@ -327,10 +344,10 @@ class AbuMetricsBase(object):
         self.order_has_ret.sort_values('buy_date')['profit_cg'].cumsum().plot(grid=True, title='profit_cg cumsum')
         plt.show()
 
-    @valid_check
+    # @valid_check
     def plot_returns_cmp(self, only_show_returns=False, only_info=False):
         """考虑资金情况下的度量，进行与benchmark的收益度量对比，收益趋势，资金变动可视化，以及其它度量信息"""
-
+        print("run plot_result_cmp")
         self.log_func('买入后卖出的交易数量:{}'.format(self.order_has_ret.shape[0]))
         self.log_func('买入后尚未卖出的交易数量:{}'.format(self.order_keep.shape[0]))
 
@@ -357,6 +374,10 @@ class AbuMetricsBase(object):
         self.algorithm_cum_returns.plot()
         plt.legend(['benchmark returns', 'algorithm returns'], loc='best')
         plt.show()
+        sio = BytesIO()
+        plt.savefig(sio, format='png')
+        data1 = base64.encodebytes(sio.getvalue()).decode()
+        print(data1)
 
         if only_show_returns:
             return

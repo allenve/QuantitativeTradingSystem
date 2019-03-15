@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'django.contrib.auth',
     'Quantitative',
     'corsheaders'
 ]
@@ -73,12 +74,16 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'corsheaders.middleware.CorsMiddleware', #注意顺序，必须放在这儿
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 拦截请求，设置session到request
+    'Quantitative.middleware.SessionMiddleware.SessionMiddleware',
 ]
 
 ROOT_URLCONF = 'myProject.urls'
@@ -107,8 +112,12 @@ WSGI_APPLICATION = 'myProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'root',
+        'NAME': 'graduation',
+        'PASSWORD': 'yupeng',
+        'HOST': '119.23.74.116',
+        'PORT': '3306'
     }
 }
 
@@ -145,7 +154,24 @@ USE_L10N = True
 
 USE_TZ = True
 
+SESSION_COOKIE_NAME = "sessionid"       # Session的cookie保存在浏览器上时的key
+SESSION_COOKIE_PATH = "/"               # Session的cookie保存的路径(默认)
+SESSION_COOKIE_DOMAIN = None            # Session的cookie保存的域名(默认)
+SESSION_COOKIE_SECURE = False           # 是否Https传输cookie
+SESSION_COOKIE_HTTPONLY = True          # 是否Session的cookie只支持http传输(默认)
+SESSION_COOKIE_AGE = 1800            # Session的cookie失效日期(30分钟)
+SESSION_SAVE_EVERY_REQUEST = True      # 是否设置关闭浏览器使得Session过期
+SESSION_COOKIE_AT_BROWSER_CLOSE = False  # 是否每次请求都保存Session，默认修改之后才能保存
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+}
 
 STATIC_URL = '/static/'

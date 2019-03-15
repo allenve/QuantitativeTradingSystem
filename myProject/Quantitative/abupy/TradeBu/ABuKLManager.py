@@ -198,7 +198,7 @@ class AbuKLManager(object):
         if n_process > 1 and ABuEnv.g_data_fetch_mode != EMarketDataFetchMode.E_DATA_FETCH_FORCE_LOCAL:
             # 1. hdf5多进程还容易写坏数据
             # 2. MAC OS 10.9 之后并行联网＋numpy 系统bug crash，卡死等问题
-            logging.info('batch get only support E_DATA_FETCH_FORCE_LOCAL for Parallel!')
+            # logging.info('batch get only support E_DATA_FETCH_FORCE_LOCAL for Parallel!')
             n_process = 1
 
         # 根据输入的choice_symbols和要并行的进程数，分配symbol到n_process个进程中

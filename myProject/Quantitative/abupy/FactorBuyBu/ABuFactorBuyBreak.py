@@ -3,14 +3,8 @@
     买入择时示例因子：突破买入择时因子
 """
 
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import division
-
 from .ABuFactorBuyBase import AbuFactorBuyBase, AbuFactorBuyXD, BuyCallMixin, BuyPutMixin
 
-__author__ = '阿布'
-__weixin__ = 'abu_quant'
 
 
 # noinspection PyAttributeOutsideInit
@@ -23,7 +17,8 @@ class AbuFactorBuyBreak(AbuFactorBuyBase, BuyCallMixin):
         self.xd = kwargs['xd']
         # 在输出生成的orders_pd中显示的名字
         self.factor_name = '{}:{}'.format(self.__class__.__name__, self.xd)
-
+        print("---------------------AbuFactorBuyBreak")
+        print(self.factor_name)
     def fit_day(self, today):
         """
         针对每一个交易日拟合买入交易策略，寻找向上突破买入机会

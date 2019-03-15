@@ -53,12 +53,35 @@ exports.cssLoaders = function (options) {
       return ['vue-style-loader'].concat(loaders)
     }
   }
+  function generateLessResourceLoader() {
+    var loaders = [
+      cssLoader,
+      'less-loader',
+      {
+        loader: 'sass-resources-loader',
+        options: {
+          resources: [
+            path.resolve(__dirname, '../src/assets/css/theme.less'), 
+            // path.resolve(__dirname, '../src/style/mixins.less')
+          ]
+        }
+      }
+    ];
+    if (options.extract) {
+      return ExtractTextPlugin.extract({
+        use: loaders,
+        fallback: 'vue-style-loader'
+      })
+    } else {
+      return ['vue-style-loader'].concat(loaders)
+    }
+  }
 
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
   return {
     css: generateLoaders(),
     postcss: generateLoaders(),
-    less: generateLoaders('less'),
+    less: generateLessResourceLoader('less'),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),

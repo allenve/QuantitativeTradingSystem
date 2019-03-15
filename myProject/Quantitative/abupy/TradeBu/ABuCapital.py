@@ -39,6 +39,8 @@ class AbuCapital(PickleStateMixin):
             raise ValueError('CapitalClass init klPd is None')
 
         # 根据基准时间序列，制作相同的时序资金对象capital_pd(pd.DcataFrame对象)
+        print("kl_pd[date]:>>>>>>>>>>>>>>>>>>>>>>>>")
+        print(kl_pd['date'])
         self.capital_pd = pd.DataFrame(
             {
                 'cash_blance': np.NAN * kl_pd.shape[0],

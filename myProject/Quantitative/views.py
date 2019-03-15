@@ -8,12 +8,28 @@ from . import controller
 def index(request):
     return HttpResponse('hello world')
 
-"""获取Stock数据"""
+# login
+def login(request):
+    return HttpResponse(json.dumps(controller.User.login(request)), content_type="application/json")
+# register
+def register(request):
+    return HttpResponse(json.dumps(controller.User.register(request)), content_type="application/json")
+# Loginout
+def loginout(request):
+    return HttpResponse(json.dumps(controller.User.loginout(request)), content_type="application/json")
+
+# User
+def setUserInfo(request):
+    return HttpResponse(json.dumps(controller.User.setUserInfo(request)), content_type="application/json")
+
+# 获取Stock数据
 def getStockData(request):
     return HttpResponse(json.dumps(controller.Stock.getStockData(request)), content_type="application/json")
 
+# 回测
 def loopBack(request):
-    return HttpResponse(json.dumps(controller.RunLoopBack.runLoopBack(request)), content_type="application/json")
+    runLoopBack = controller.RunLoopBack.RunLoopBack(request)
+    return HttpResponse(json.dumps(runLoopBack.runLoopBack(request)), content_type="application/json")
 
 def strategyTrade(request):
     # resp = controller.Stock.exampleTrade(request);

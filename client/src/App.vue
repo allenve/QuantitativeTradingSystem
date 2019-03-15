@@ -27,6 +27,7 @@
     #app {
         width: 100%;
         height: 100%;
+        min-width: 1000px;
         font-size: 18px;
         .router{
             position: absolute;

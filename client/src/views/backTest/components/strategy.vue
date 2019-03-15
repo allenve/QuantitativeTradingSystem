@@ -73,13 +73,7 @@
 
         methods: {
             submitStrategy() {
-                this.getStrategyData()
-            },
-            getStrategyData() {
-                return this.$api.get("/quan/strategyTrade/").then(res => {
-                    console.log(res);
-                    return res.data;
-                })
+                this.$emit("closeStrategyDrawer")
             }
         },
 
