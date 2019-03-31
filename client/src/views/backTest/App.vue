@@ -1,7 +1,7 @@
 <!-- 回测界面 -->
 <template>
     <div class='App'>
-        <page-header>
+        <page-header :withBackBtn="false">
             <h3>历史数据回测</h3>
         </page-header>
         <preview />

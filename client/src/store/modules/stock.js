@@ -3,7 +3,11 @@ export default {
         id: '',
         values: [],
         categoryData: [],
-        volumes: []
+        volumes: [],
+        date: {
+            buy: [],
+            sell: []
+        }
     },
     mutations: {
         setStockData(state, data) {
@@ -11,6 +15,10 @@ export default {
             state.values = data.values;
             state.categoryData = data.categoryData;
             state.volumes = data.volumes;
+            if (data.date && data.date.buy && data.date.sell) {
+                state.date.buy = data.date.buy;
+                state.date.sell = data.date.sell;
+            }
         }
     },
     actions: {},

@@ -24,7 +24,8 @@
                 id: state => state.stock.id,
                 values: state => state.stock.values,
                 categoryData: state => state.stock.categoryData,
-                volumes: state => state.stock.volumes
+                volumes: state => state.stock.volumes,
+                stratrgyDate: state => state.stock.date
             })
         },
         mounted() {
@@ -38,6 +39,8 @@
             } else {
                 console.log("id is not ture");
             }
+
+            console.log(this.stratrgyDate);
             
         },
         methods: {

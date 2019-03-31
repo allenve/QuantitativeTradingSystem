@@ -1,7 +1,7 @@
 <!-- preview -->
 <template>
     <div class='preview'>
-        <h3>所选公司：{{companyName}}</h3>
+        <!-- <h3>所选公司：{{companyName}}</h3> -->
         <div class="wrapper">
             <Button @click="strategyState = true" type="primary">策略选择</Button>
             <Drawer title="策略选择" v-model="strategyState" width="800" :mask-closable="false" :styles="styles">
@@ -9,16 +9,17 @@
             </Drawer>
         </div>
         <div class="echart-wrapper">
-
+            <k-chart v-if="isShowKChart" :stockDataId="stockDataId" />
         </div>
         
     </div>
 </template>
 
 <script>
-    import { mapState } from 'vuex'
     import strategy from './strategy'
     import kChart from '../../common/kChart'
+    import { mapState, mapMutations } from 'vuex'
+
     export default {
         name: 'preview',
         data() {
@@ -30,6 +31,8 @@
                     paddingBottom: '53px',
                     position: 'static'
                 },
+                stockDataId: '',
+                isShowKChart: false,
             };
         },
 
@@ -39,16 +42,9 @@
         },
 
         mounted() {
-            if (!this.companyName) {
-                this.$routerBack();
-            }
-        },
-
-        computed: {
-            ...mapState({
-                companyName: state => state.company.name,
-                companyCode: state => state.company.code
-            })
+            // if (!this.companyName) {
+            //     this.$routerBack();
+            // }
         },
 
         methods: {
@@ -56,14 +52,36 @@
                 this.$loading("策略运行中")
                 return this.$api.get("/quan/strategyTrade/").then(res => {
                     this.$closeToast();
-                    return res
+                    this.$Message.success("成功，正在初始化数据")
+                    return res.data
                 })
             },
-            closeStrategyDrawer() {
+            closeStrategyDrawer(data) {
                 this.strategyState = false;
-                this.getStrategyData().then(res => {
-                    console.log(res);
-                })
+                if (data) {
+                    this.getStrategyData().then(res => {
+                        this.initStockDataAndLoadEchart(res)
+                    })
+                }
+                
+                // this.getStrategyData().then(res => {
+                //     console.log(res);
+                // })
+            },
+
+            ...mapMutations({
+                setStockData: 'setStockData'
+            }),
+            initStockDataAndLoadEchart(data) {
+                console.log(data);
+                let stockData = this.$initStockData(data.stock)
+                stockData = Object.assign({}, stockData, {date: data.date})
+                console.log(stockData);
+                this.setStockData(stockData, data.date);
+                this.stockDataId = stockData.id;
+                this.isShowKChart = true;
+                // this.
+                
             }
         },
 

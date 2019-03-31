@@ -1,11 +1,11 @@
-# 历史数据回测
-from .. abupy import AbuFactorBuyBreak
-from .. abupy import AbuFactorAtrNStop
-from .. abupy import AbuFactorPreAtrNStop
-from .. abupy import AbuFactorCloseAtrNStop
-from .. abupy import AbuMetricsBase
+# # 历史数据回测
+# from .. abupy import AbuFactorBuyBreak
+# from .. abupy import AbuFactorAtrNStop
+# from .. abupy import AbuFactorPreAtrNStop
+# from .. abupy import AbuFactorCloseAtrNStop
+# from .. abupy import AbuMetricsBase
 
-from .. abupy import abu, FactorBuyBu, FactorSellBu, CoreBu, AlphaBu, TradeBu
+# from .. abupy import abu, FactorBuyBu, FactorSellBu, CoreBu, AlphaBu, TradeBu
 
 
 class RunLoopBack():
@@ -77,6 +77,7 @@ class RunLoopBack():
         print(_)
         print("------------------")
         abu_result_tuple = CoreBu.ABuStore.AbuResultTuple(orders_pd, action_pd, capital, benchmark)
+        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<end")
         metrics = AbuMetricsBase(orders_pd, action_pd, capital, benchmark)
         # #运行策略
         # abu_result_tuple, kl_pd_manger = CoreBu.ABu.run_loop_back(read_cash,

@@ -13,6 +13,11 @@ urlpatterns = [
     # User
     path('setUserInfo/', views.setUserInfo, name='post_case'),
 
+    # Stock
+    # 搜索股票公司信息
+    path('getStockCompany/', views.getStockCompany, name='post_case'),
+    path('stockDataTest/', views.stockDataTest, name='post_case'),
+
     path('getStockData/', views.getStockData, name='post_case'),
     path('loopBack/', views.loopBack, name="get_case"),
     path('strategyTrade/', views.strategyTrade, name="get_case")

@@ -22,9 +22,19 @@ def loginout(request):
 def setUserInfo(request):
     return HttpResponse(json.dumps(controller.User.setUserInfo(request)), content_type="application/json")
 
+
+
+
 # 获取Stock数据
 def getStockData(request):
     return HttpResponse(json.dumps(controller.Stock.getStockData(request)), content_type="application/json")
+
+# 获取上市公司信息
+def getStockCompany(request):
+    return HttpResponse(json.dumps(controller.Stock.getStockCompany(request)), content_type="application/json")
+# 存储股票数据测试
+def stockDataTest(request):
+    return HttpResponse(json.dumps(controller.Stock.stockDataTest(request)), content_type="application/json")
 
 # 回测
 def loopBack(request):

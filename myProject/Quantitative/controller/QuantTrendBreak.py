@@ -22,10 +22,10 @@ class QuantTrendBreak:
         expan_min = stock_df.Close.expanding().max()
         stock_df['N2_Low'].fillna(value=expan_min,inplace=True)#目前出现过的最小值填充前N2个nan
         #""" 收盘价超过N1最高价 买入股票持有"""
-        buy_index = stock_df[stock_df.Close > stock_df.N1_High.shift(1)].index #报错 TypeError
+        buy_index = stock_df[stock_df.Close > stock_df.N1_High.shift(1)].index
         stock_df.loc[buy_index,'signal'] = 1
         #""" 收盘价超过N2最低价 卖出股票持有"""
-        sell_index = stock_df[stock_df.Close < stock_df.N2_Low.shift(1)].index #报错 TypeError
+        sell_index = stock_df[stock_df.Close < stock_df.N2_Low.shift(1)].index
         stock_df.loc[sell_index,'signal'] = 0
         stock_df['keep'] = stock_df.signal.shift(1)
         stock_df['keep'].fillna(method = 'ffill',inplace = True)
@@ -43,6 +43,7 @@ class QuantTrendBreak:
         for kl_index,today in stock_df.iterrows():
             if today.watsignal == 1:# 买入
                 self.skip_days = -1
+                print(today)
                 buyDay.append(str(kl_index.to_pydatetime()))
             elif today.watsignal == -1:# 卖出
                 if self.skip_days == -1:
@@ -51,7 +52,7 @@ class QuantTrendBreak:
 
         stock = stock_df.to_json(orient="index")
 
-        print(stock)
+        # print(stock)
 
         resp = {
             "stock": json.loads(stock),

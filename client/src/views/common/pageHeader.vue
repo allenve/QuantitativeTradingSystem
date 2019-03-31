@@ -2,7 +2,7 @@
 <template>
     <div class='pageHeader'>
         <slot></slot>
-        <div class="back" @click="back">
+        <div class="back" @click="back" v-if="withBackBtn">
             <sicon name="back" scale="1.3"></sicon>
             <span>返回</span>
         </div>
@@ -16,6 +16,13 @@
         name: 'pageHeader',
         data() {
             return {};
+        },
+
+        props: {
+            withBackBtn: {
+                type: Boolean,
+                default: true
+            }
         },
 
         components: {},

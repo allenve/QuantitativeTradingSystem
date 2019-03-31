@@ -1,16 +1,15 @@
 # """股票类"""
 from django.shortcuts import render
 from django.http import HttpResponse
-from .. modules import Stock
+from .. modules import Stock, StockCompany
 from .QuantAverBreak import QuantAverBreak
 from .QuantTrendBreak import QuantTrendBreak
 import json
 import datetime
 
+
 # """获取stack数据"""
 def getStockData(request):
-    print("post requet")
-    print(request.body)
     body = json.loads(request.body.decode())
     code = body.get('code')
     start = body.get('start')
@@ -23,12 +22,33 @@ def getStockData(request):
         "success": "ok",
         "data": json.loads(stock.getStockFromHttp())
     }
+    resp = {
+        "success": "ok",
+        "data": json.loads(stock_data)
+    }
     return resp
 
+def getStockCompany(request):
+    body = json.loads(request.body.decode())
+    limit = int(body.get('limit'))
+    pagenum = int(body.get('pagenum'))
+
+    stock_company = StockCompany.getStockCompany('L', limit, pagenum)
+    resp = {
+        "code": 200,
+        "data": {
+            "msg": "成功",
+            "data": stock_company
+        }
+    }
+    return resp
+
+def stockDataTest(request):
+    stock_data = StockCompany.saveTsCodeWithCompany()
 
 def strategyTrade(request):
     print("=======>")
-    stock = Stock.Stock('BIDU', datetime.datetime(2017,1,1), datetime.date.today()).getStockData()
+    stock = Stock.Stock('BIDU', datetime.datetime(2014,1,1), datetime.date.today()).getStockData()
     print("get stock done")
 
     # example_trade = QuantAverBreak()
@@ -42,6 +62,3 @@ def strategyTrade(request):
         "data": data
     }
     return resp
-
-def main():
-    print("main()")

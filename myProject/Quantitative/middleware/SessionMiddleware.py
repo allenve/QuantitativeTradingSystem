@@ -12,7 +12,15 @@ class SessionMiddleware(MiddlewareMixin):
         self.get_response = get_response
 
     def process_request(self, request):
-        not_need_login = ['/quan/login/', '/quan/loginout/', '/quan/register/', '/quan/loopBack/']
+        not_need_login = [
+            '/quan/login/', 
+            '/quan/loginout/', 
+            '/quan/register/', 
+            '/quan/loopBack/', 
+            '/quan/getStockData/',
+            '/quan/getStockCompany/',
+            '/quan/stockDataTest/'
+        ]
         # 不需要登录验证
         if request.path in not_need_login:
             response = self.get_response(request)

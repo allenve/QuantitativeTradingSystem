@@ -85,7 +85,24 @@ let filters = {
         }else {
             this.$router.push("/my/login");
         }
-    }
+    },
+    // 初始化股票数据
+    initStockData(data) {
+        let rawData = {
+            id: this.$GenNonDuplicateID(),
+            values: [],
+            categoryData: [],
+            volumes: []
+        }
+        Object.keys(data).map((item, i) => {
+            let row = data[item];
+            rawData.values.push([Number(row['Open']), Number(row['Close']), Number(row['Low']), Number(row['High']), Number(row['Volume'])])
+            rawData.categoryData.push(this.$getLocalTime(Number(item), true))
+            rawData.volumes.push([i, row['Volume'], Number(row['Open']) > Number(row['Close']) ? 1 : -1])
+        })
+        
+        return rawData;
+    },
 
 }
 export default {
@@ -104,6 +121,7 @@ export default {
         Vue.prototype.$routerBack = filters.routerBack
         Vue.prototype.$GenNonDuplicateID = filters.GenNonDuplicateID
         Vue.prototype.$getUserInfo = filters.getUserInfo
+        Vue.prototype.$initStockData = filters.initStockData
 
     }
 }

@@ -1,40 +1,70 @@
 <!-- App -->
 <template>
     <div class="index">
+        <div class="index_bg"></div>
+        <indexpage />
     </div>
 </template>
 
 <script>
-export default {
-    name: 'App',
-    data () {
-        return {
-        };
-    },
+    import indexpage from './components/indexpage'
+    export default {
+        name: 'App',
+        data() {
+            return {};
+        },
 
-    components: {},
+        components: {
+            indexpage
+        },
 
-}
+        mounted() {
+            // this.$api.post('/quan/getStockCompany/').then(res => {
+            //     console.log(res);
+            // })
+        },
 
+    }
 </script>
 
 <style scoped lang='less'>
-.index {
-    margin: 20px;
-    .demo {
-        border: 1px solid #eee;
-        width: 200px;
-        height: 200px;
-        float: left;
-        display: flex;
-        p {
-            flex: 1;
-            height: 30px;
-            border: 1px solid #aaa;
-        }
-        span {
-            flex: 4
+    .index {
+        // background: url('../../assets/img/bg_2.png') no-repeat;
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+        overflow: hidden;
+        .index_bg {
+            position: absolute;
+            z-index: 0;
+            top: 0;
+            background: url('../../assets/img/bg_2.png') no-repeat;
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+            -webkit-animation-name: scaleDraw; /*关键帧名称*/
+            -webkit-animation-timing-function: ease-in-out; /*动画的速度曲线*/
+            -webkit-animation-iteration-count: infinite;  /*动画播放的次数*/
+            -webkit-animation-duration: 15s; /*动画所花费的时间*/
         }
     }
-}
+
+    @keyframes scaleDraw {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        25% {
+            transform: scale(1.1);
+            opacity: 0.9;
+        }
+        50% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        75% {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+    }
 </style>

@@ -7,6 +7,7 @@ import transaction from '../views/transaction/router'
 import my from '../views/my/router'
 import backtest from '../views/backTest/router'
 import test from '../views/test/router'
+import search from '../views/search/router'
 
 Vue.use(Router)
 
@@ -22,6 +23,7 @@ export default new Router({
     ...transaction,
     ...my,
     ...backtest,
-    ...test
+    ...test,
+    ...search
   ]
 })
