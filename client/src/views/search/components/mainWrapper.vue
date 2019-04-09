@@ -1,21 +1,31 @@
 <!-- mainWrapper -->
 <template>
     <div class='mainWrapper'>
-        <h4>国内上市公司基本信息</h4>
+        <div class="mainWrapper-header">
+            <h4>国内上市公司基本信息</h4>
+            <div class="searchBox">
+                <AutoComplete
+                    v-model="companyNameKeyWord"
+                    @on-search="searchCompany"
+                    icon="ios-search"
+                    placeholder="请输入你想搜索的公司"
+                    style="width:300px">
+                    <Option 
+                        v-for="(item,i) in companyNameList" 
+                        @on-select-selected="onSelect(item)"
+                        :key="i">{{item.name}}/{{item.ts_code}}</Option>
+                </AutoComplete>
+            </div>
+        </div>
         <div class="mainWrapper-stockCompany">
-            <!-- <ul class="">
-                <li v-for="(company, i) in company_list" :key="i">
-                    <span>{{company.name}}</span>
-                </li>
-            </ul> -->
             <Table border :columns="company_columns" :data="company_list"></Table>
             <Page 
                 class-name="mainWrapper-stockCompany-page" 
                 :total="count" 
                 @on-change="changePage"
                 show-total />
-            <!-- <span class="mainWrapper-stockCompany-total">共有 {{count}} 条数据</span> -->
         </div>
+        <router-view />
     </div>
 </template>
 
@@ -68,7 +78,10 @@ export default {
             ],
             company_list: [],
             pagenum: 1,
-            count: 0
+            count: 0,
+            // 搜索相关
+            companyNameList: [],
+            companyNameKeyWord: ''
         };
     },
 
@@ -86,18 +99,18 @@ export default {
                 limit: 10,
                 pagenum: this.pagenum
             }
-            this.$api.post('/quan/getStockCompany/', req).then(res => {
+            this.$api.post('/api/getStockCompany', req).then(res => {
                 res.code == 200 ? this.initStockCompany(res.data) : this.$Message.error(res.data.msg);
             })
         },
 
         // 初始化数据
         initStockCompany(data) {
-            this.company_list = data.data.company_list.map(item => {
+            this.company_list = data.company_list.map(item => {
                 item.exchange = EXCHANGE.getValueFromAlias(item.exchange)
                 return item;
             })
-            this.count = data.data.count;
+            this.count = data.count;
             this.$closeToast()
         },
 
@@ -107,7 +120,32 @@ export default {
             this.getStockCompany()
         },
         showCompanyDetail(item) {
-            console.log(item);
+            this.$router.push({
+                path: `/search/${item.ts_code}`,
+                name: "companyDetail",
+                params: {
+                    "ts_code": item.ts_code,
+                    "name": item.name,
+                    "fullname": item.fullname
+                }
+            })
+        },
+
+        // search
+        onSelect(val) {
+            val && this.showCompanyDetail(val);
+        },
+        searchCompany() {
+            const payload = {
+                "name": this.companyNameKeyWord
+            }
+            this.$api.post('/api/searchStockCompany', payload).then(res => {
+                res.code == 200 ? this.getSearchValue(res.data) : this.$Message.error(res.data.msg)
+            })
+        },
+        getSearchValue(data) {
+            this.companyNameList = [];
+            this.companyNameList = data.company_list
         }
     },
 
@@ -117,10 +155,22 @@ export default {
 
 <style scoped lang='less'>
 .mainWrapper{
-    padding: 20px;
-    h4 {
-        font-size: 16px;
+    padding: 0 20px;
+    .mainWrapper-header {
+        padding-top: 8px;
+        height: 32px;
+        h4 {
+            display: inline-block;
+            font-size: 16px;
+            line-height: 32px;
+        }
+        .searchBox {
+            // display: inline-block;
+            float: right;
+            margin-right: 20px;
+        }
     }
+    
     .mainWrapper-stockCompany {
         margin: 20px;
         .mainWrapper-stockCompany-page {

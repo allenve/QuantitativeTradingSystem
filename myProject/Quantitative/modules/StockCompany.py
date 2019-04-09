@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms.models import model_to_dict
+from django.db.models import Q
 import json
 
 class StockCompanyDetail(models.Model):
@@ -43,7 +43,7 @@ class StockCompany(models.Model):
     class Meta():
         db_table = 'stock_company'
 
-# 或许L上市 D退市 P暂停上市 股票列表
+# 获取L上市 D退市 P暂停上市 股票列表
 def getStockCompany(list_status, limit, pagenum):
     status = list_status or 'L'
     company_list = []
@@ -51,6 +51,36 @@ def getStockCompany(list_status, limit, pagenum):
         company_lists = StockCompany.objects.all()[limit*(pagenum-1):limit*pagenum]
         # company_lists = StockCompany.objects.all()[0:limit]
         count = StockCompany.objects.count()
+        for company in company_lists:
+            json_dict = {}
+            json_dict["id"] = str(company.id) or ''
+            json_dict["ts_code"] = str(company.ts_code) or ''
+            json_dict["name"] = str(company.name) or ''
+            json_dict["area"] = str(company.area) or ''
+            json_dict["industry"] = str(company.industry) or ''
+            json_dict["fullname"] = str(company.fullname) or ''
+            json_dict["exchange"] = str(company.exchange) or ''
+            json_dict["list_status"] = str(company.list_status) or ''
+            company_list.append(json_dict)
+
+        res_company_data = {
+            "company_list":  company_list,
+            "count": count,
+            "nowPage": pagenum
+        }
+        return [200, res_company_data]
+    
+    except Exception as e:
+        print("failed")
+        return [201, {"msg": str(e)}]
+
+# 通过公司姓名模糊查询
+def searchStockCompanyByName(name):
+    company_list = []
+
+    try:
+        company_lists = StockCompany.objects.filter(Q(name__icontains=name)|Q(fullname__icontains=name))[:20]
+        
         for company in company_lists:
             json_dict = {}
             json_dict["ts_code"] = str(company.ts_code) or ''
@@ -63,22 +93,19 @@ def getStockCompany(list_status, limit, pagenum):
             company_list.append(json_dict)
 
         res_company_data = {
-            "company_list":  company_list,
-            "count": count
+            "company_list":  company_list
         }
-        return res_company_data
-    
+
+        return [200, res_company_data]
     except Exception as e:
         print(e)
-        return {"msg": "目前暂支持上交所和深交所。"}
-    
+        return [201, {"msg": str(e)}]
+
 
 # 通过股票代码或许公司相信信息
-def searchStockCompany(ts_code):
-    print(ts_code)
+def searchStockCompanyByTsCode(ts_code):
     try:
         company_data = StockCompanyDetail.objects.get(ts_code=ts_code)
-        print(company_data)
         res_company_data = {
             "ts_code": str(company_data.ts_code) or "",
             "exchange": str(company_data.exchange) or "",
@@ -97,10 +124,10 @@ def searchStockCompany(ts_code):
             "main_business": str(company_data.main_business) or "",
             "business_scope": str(company_data.business_scope) or ""
         }
-        return res_company_data
+        return [200, res_company_data]
     except Exception as e:
         print(e)
-        return {"msg": "目前暂支持上交所和深交所。"}
+        return [201, {"msg": str(e)}]
 
 
 

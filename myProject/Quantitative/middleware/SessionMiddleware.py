@@ -12,21 +12,12 @@ class SessionMiddleware(MiddlewareMixin):
         self.get_response = get_response
 
     def process_request(self, request):
-        not_need_login = [
-            '/quan/login/', 
-            '/quan/loginout/', 
-            '/quan/register/', 
-            '/quan/loopBack/', 
-            '/quan/getStockData/',
-            '/quan/getStockCompany/',
-            '/quan/stockDataTest/'
+        need_login = [
+            '/quan/setUserInfo/',
         ]
-        # 不需要登录验证
-        if request.path in not_need_login:
-            response = self.get_response(request)
-            return response
         # 需要登录验证
-        else:
+        if request.path in need_login:
+            
             print(request.user.is_authenticated)
             if not request.user.is_authenticated:
                 print('未登录或登录已过期')
@@ -37,6 +28,11 @@ class SessionMiddleware(MiddlewareMixin):
                     }
                 }
                 return HttpResponse(json.dumps(resp), content_type="application/json")
+            print("need_login but request.user.is_authenticated")
+        # 不需要登录验证
+        # else:
+        response = self.get_response(request)
+        return response
         # session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
         # request.session = self.SessionStore(session_key)
 

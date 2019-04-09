@@ -32,6 +32,14 @@ def getStockData(request):
 # 获取上市公司信息
 def getStockCompany(request):
     return HttpResponse(json.dumps(controller.Stock.getStockCompany(request)), content_type="application/json")
+
+def getStockCompanyDetail(request):
+    return HttpResponse(json.dumps(controller.Stock.getStockCompanyDetail(request)), content_type="application/json")
+
+# 搜索公司信息
+def searchStockCompany(request):
+    return HttpResponse(json.dumps(controller.Stock.searchStockCompany(request)), content_type="application/json")
+
 # 存储股票数据测试
 def stockDataTest(request):
     return HttpResponse(json.dumps(controller.Stock.stockDataTest(request)), content_type="application/json")

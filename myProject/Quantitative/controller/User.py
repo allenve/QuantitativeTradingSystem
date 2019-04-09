@@ -87,6 +87,7 @@ def setUserInfo(request):
     sex = body.get('sex')
     city = body.get('city')
     signature = body.get('signature')
+    print(signature)
     resp = Users.setUserInfo(user_id, nickname, mobile, email, sex, city, signature)
 
     return {

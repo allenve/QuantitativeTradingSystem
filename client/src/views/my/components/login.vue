@@ -44,7 +44,7 @@ export default {
                 password: this.password
             }
             this.$loading('登录中。。。')
-            this.$api.post("/quan/login/", req).then(res => {
+            this.$api.post("/api/login", req).then(res => {
                 this.$closeToast();
                 console.log(res);
                 res.code == 200 ? this.loginSuccess(res.data.data) : this.$Message.error(res.data.msg);
@@ -55,11 +55,17 @@ export default {
         },
         loginSuccess(user_data) {
             this.$Message.success('登录成功');
-            console.log(user_data);
             this.setUserInfo(user_data);
             sessionStorage.setItem('user_data', JSON.stringify(user_data))
+
+            let redirectHref = '/my/userInfo';
+            if (this.$route.fullPath.indexOf("?") !== -1 && this.$route.fullPath.indexOf('redirect') !== -1) {
+                console.log("redirect href");
+                redirectHref = decodeURIComponent(this.$route.fullPath.split("?")[1].split("=")[1]);
+            }
+
             setTimeout(() => {
-                this.$router.push("/my/userInfo");
+                this.$router.push(redirectHref);
             }, 1000)
             
         }

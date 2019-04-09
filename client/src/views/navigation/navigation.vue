@@ -21,6 +21,7 @@ export default {
             links: [
                 {name: '首页', link: '/index', icon: 'index'},
                 {name: '即时查询', link: '/search', icon: 'search'},
+                {name: '我的收藏', link: '/myCollection', icon: 'collection'},
                 // {name: '历史回测', link: '/search', icon: 'search'},
                 // {name: '行情', link: '/price', icon: 'price'},
                 {name: '回测', link: '/backtest', icon: 'backtest'},
@@ -73,6 +74,9 @@ export default {
             &.router-link-active{
                 color: #fff;
                 font-weight: 500;
+            }
+            &:hover {
+                color: #fff;
             }
         }
     }

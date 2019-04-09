@@ -35,11 +35,30 @@ def getStockCompany(request):
 
     stock_company = StockCompany.getStockCompany('L', limit, pagenum)
     resp = {
-        "code": 200,
-        "data": {
-            "msg": "成功",
-            "data": stock_company
-        }
+        "code": stock_company[0],
+        "data": stock_company[1]
+    }
+    return resp
+
+def searchStockCompany(request):
+    body = json.loads(request.body.decode())
+    name = body.get('name')
+
+    stock_company = StockCompany.searchStockCompanyByName(name)
+    resp = {
+        "code": stock_company[0],
+        "data": stock_company[1]
+    }
+    return resp
+
+def getStockCompanyDetail(request):
+    body = json.loads(request.body.decode())
+    ts_code = body.get('ts_code')
+
+    stock_company_detail = StockCompany.searchStockCompanyByTsCode(ts_code)
+    resp = {
+        "code": stock_company_detail[0],
+        "data": stock_company_detail[1]
     }
     return resp
 

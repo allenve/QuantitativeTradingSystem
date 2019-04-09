@@ -7,7 +7,7 @@
             <h4>多种量化交易策略</h4>
             <h4>随时 · 随地 · 洞悉全局</h4>
             <div class="buttons">
-                <input type="button" value="即时查询">
+                <input type="button" @click="routerToSearch" value="即时查询">
                 <input type="button" value="历史回测">
             </div>
         </div>
@@ -53,6 +53,12 @@ export default {
     },
 
     mounted() {
+    },
+
+    methods: {
+        routerToSearch() {
+            this.$router.push("/search")
+        }
     },
 
 }

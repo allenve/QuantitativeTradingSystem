@@ -20,7 +20,7 @@ export default {
 
     methods: {
         loginout() {
-            this.$api.get("/quan/loginout/").then(res => {
+            this.$api.get("/api/loginout").then(res => {
                 console.log(res);
                 
                 res.code == 200 ? this.$Message.success(res.data.msg) : this.$Message.error(res.data.msg);

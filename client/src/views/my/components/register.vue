@@ -75,7 +75,7 @@ export default {
                 }
                 
                 this.$loading('注册中。。。')
-                this.$api.post("/quan/register/", req).then(res => {
+                this.$api.post("/api/register", req).then(res => {
                     this.$closeToast();
                     this.registerSuccess(res.data)
                 })

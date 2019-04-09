@@ -127,7 +127,7 @@ export default {
                 city: this.cityArr[0],
                 signature: this.signature
             }
-            this.$api.post('/quan/setUserInfo/', req).then(res => {
+            this.$api.post('/api/setUserInfo', req).then(res => {
                 console.log(res);
                 this.$closeToast();
                 res.code == 200 ? this.changeSuccess(res.data.data) : this.$Message.error(res.data.msg);

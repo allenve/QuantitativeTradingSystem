@@ -6,17 +6,21 @@ from . import views
 urlpatterns = [
     path('index/', views.index),
     # 登录注册
-    path('register/', views.register, name='post_case'),
-    path('login/', views.login, name='post_case'),
-    path('loginout/', views.loginout, name='get_case'),
+    path('register', views.register, name='post_case'),
+    path('login', views.login, name='post_case'),
+    path('loginout', views.loginout, name='get_case'),
 
     # User
-    path('setUserInfo/', views.setUserInfo, name='post_case'),
+    path('setUserInfo', views.setUserInfo, name='post_case'),
 
     # Stock
     # 搜索股票公司信息
-    path('getStockCompany/', views.getStockCompany, name='post_case'),
-    path('stockDataTest/', views.stockDataTest, name='post_case'),
+    path('getStockCompany', views.getStockCompany, name='post_case'),
+    path('getStockCompanyDetail', views.getStockCompanyDetail, name='post_case'),
+    path('searchStockCompany', views.searchStockCompany, name='post_case'),
+    
+
+    path('stockDataTest', views.stockDataTest, name='post_case'),
 
     path('getStockData/', views.getStockData, name='post_case'),
     path('loopBack/', views.loopBack, name="get_case"),

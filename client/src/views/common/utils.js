@@ -11,3 +11,24 @@ export const EXCHANGE = new Enum(
     {alias: 'SZSE', text: '深交所', value: '深交所', label: 'SZSE'},
     {alias: 'HKEX', text: '港交所', value: '港交所', label: 'HKEX'},
 )
+
+export const COMPANYDETAILLIST = new Enum(
+    {alias: 'name', text: '名称'},
+    {alias: 'fullname', text: '公司全称'},
+    {alias: 'ts_code', text: '股票代码'},
+    {alias: 'exchange', text: '交易所代码'},
+    {alias: 'chairman', text: '法人代表'},
+    {alias: 'manager', text: '总经理'},
+    {alias: 'secretary', text: '董秘'},
+    {alias: 'reg_capital', text: '注册资本'},
+    {alias: 'setup_date', text: '注册日期'},
+    {alias: 'province', text: '所在省份'},
+    {alias: 'city', text: '所在城市'},
+    {alias: 'introduction', text: '公司介绍'},
+    {alias: 'website', text: '公司主页'},
+    {alias: 'email', text: '电子邮件'},
+    {alias: 'office', text: '办公室'},
+    {alias: 'employees', text: '员工人数'},
+    {alias: 'main_business', text: '主要业务及产品'},
+    {alias: 'business_scope', text: '经营范围'},
+)

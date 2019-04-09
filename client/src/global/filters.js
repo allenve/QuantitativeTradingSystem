@@ -83,7 +83,9 @@ let filters = {
         if (user_data) {
             return user_data;
         }else {
-            this.$router.push("/my/login");
+            alert("你还未登录或登录已过期，请重新登录。")
+            console.log(this.$route.path);
+            this.$router.push(`/my/login?redirect=${this.$route.path}`);
         }
     },
     // 初始化股票数据
