@@ -12,8 +12,14 @@ class SessionMiddleware(MiddlewareMixin):
         self.get_response = get_response
 
     def process_request(self, request):
+        # 需要登录的api
         need_login = [
-            '/quan/setUserInfo/',
+            '/api/setUserInfo',
+            '/api/loginout',
+            # '/api/collectionCompany',
+            # '/api/isCompanyCollection',
+            # '/api/cancelCollectionCompany',
+            '/api/needlogin'
         ]
         # 需要登录验证
         if request.path in need_login:
@@ -28,7 +34,6 @@ class SessionMiddleware(MiddlewareMixin):
                     }
                 }
                 return HttpResponse(json.dumps(resp), content_type="application/json")
-            print("need_login but request.user.is_authenticated")
         # 不需要登录验证
         # else:
         response = self.get_response(request)

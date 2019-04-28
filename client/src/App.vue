@@ -13,7 +13,7 @@
 </template>
 
 <script>
-    import navigation from './views/navigation/navigation.vue'
+    import navigation from './views/common/navigation.vue';
     export default {
         name: 'App',
 

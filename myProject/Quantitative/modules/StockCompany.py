@@ -83,6 +83,7 @@ def searchStockCompanyByName(name):
         
         for company in company_lists:
             json_dict = {}
+            json_dict["id"] = str(company.id) or ''
             json_dict["ts_code"] = str(company.ts_code) or ''
             json_dict["name"] = str(company.name) or ''
             json_dict["area"] = str(company.area) or ''
@@ -107,6 +108,7 @@ def searchStockCompanyByTsCode(ts_code):
     try:
         company_data = StockCompanyDetail.objects.get(ts_code=ts_code)
         res_company_data = {
+            "id": str(company_data.id) or "",
             "ts_code": str(company_data.ts_code) or "",
             "exchange": str(company_data.exchange) or "",
             "chairman": str(company_data.chairman) or "",

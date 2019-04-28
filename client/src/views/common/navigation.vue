@@ -1,6 +1,6 @@
-<!-- navigation -->
+<!-- navigation全局导航 -->
 <template>
-    <div class="navigation" :class="{'Transparent': backgroundTransparent }">
+    <div class="navigation">
         <span class="header">多因子量化投资管理系统</span>
         <ul>
             <router-link v-for="(link, i) in links" :key="i" :to="link.link">
@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
 
 export default {
     name: 'navigation',
@@ -24,7 +23,7 @@ export default {
                 {name: '我的收藏', link: '/myCollection', icon: 'collection'},
                 // {name: '历史回测', link: '/search', icon: 'search'},
                 // {name: '行情', link: '/price', icon: 'price'},
-                {name: '回测', link: '/backtest', icon: 'backtest'},
+                {name: '历史数据回测', link: '/backtest', icon: 'backtest'},
                 // {name: '交易', link: '/transaction', icon: 'transaction'},
                 {name: '我的', link: '/my', icon: 'my'}
             ]
@@ -32,13 +31,6 @@ export default {
     },
 
     components: {},
-
-    
-    computed: {
-        ...mapState({
-            backgroundTransparent: state => state.style.backgroundTransparent,
-        })
-    },
 
 }
 

@@ -1,7 +1,7 @@
 <!-- k线图 -->
 <template>
     <div class='kChart'>
-        <div id="myChart" :style="{width: '600px', height: '450px'}"></div>
+        <div id="myChart" :style="{width: '800px', height: '500px'}"></div>
     </div>
 </template>
 
@@ -309,7 +309,7 @@
 
 <style scoped lang='less'>
     .kChart {
-        width: 600px;
+        width: 800px;
         height: auto;
         margin: 0 auto;
     }

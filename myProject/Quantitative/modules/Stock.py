@@ -6,15 +6,15 @@ import pandas_datareader.data as web
 
 
 class Stock:
-    def __init__(self, name, start, end):
-        self.name = name
+    def __init__(self, code, start, end):
+        self.code = code
         self.start = start
         self.end = end
 
     # 返回json数据
     def getStockFromHttp(self):
         # 获取数据
-        prices = web.DataReader(self.name, 'yahoo', self.start, self.end)
+        prices = web.DataReader(self.code, 'yahoo', self.start, self.end)
         # 处理缺失值
         prices = prices.dropna(axis=0,how='all')
         # 保留2位小数

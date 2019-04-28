@@ -22,6 +22,10 @@
             withBackBtn: {
                 type: Boolean,
                 default: true
+            },
+            overLoadBackClick: {
+                type: Boolean,
+                default: true
             }
         },
 
@@ -29,7 +33,7 @@
 
         methods: {
             back() {
-                this.$routerBack();
+                this.overLoadBackClick && this.$routerBack();
             }
         },
 

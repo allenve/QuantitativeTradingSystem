@@ -8,7 +8,7 @@ export default [
     	component: App,
         children: [
             {
-                path: '/search/:ts_code',
+                path: '/search/:id',
                 name: 'companyDetail',
                 component: CompanyDetail,
                 props: true

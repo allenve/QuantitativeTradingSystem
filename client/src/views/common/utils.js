@@ -13,8 +13,8 @@ export const EXCHANGE = new Enum(
 )
 
 export const COMPANYDETAILLIST = new Enum(
-    {alias: 'name', text: '名称'},
-    {alias: 'fullname', text: '公司全称'},
+    {alias: 'company_name', text: '名称'},
+    {alias: 'company_fullname', text: '公司全称'},
     {alias: 'ts_code', text: '股票代码'},
     {alias: 'exchange', text: '交易所代码'},
     {alias: 'chairman', text: '法人代表'},

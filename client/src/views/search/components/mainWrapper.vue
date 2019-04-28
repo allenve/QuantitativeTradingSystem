@@ -31,6 +31,7 @@
 
 <script>
 import { EXCHANGE } from '../../common/utils.js'
+import { mapState,mapMutations } from 'vuex'
 
 export default {
     name: 'mainWrapper',
@@ -92,6 +93,9 @@ export default {
     },
 
     methods: {
+        ...mapMutations({
+            setCompanyData: 'setCompanyData'
+        }),
         // api 获取公司列表数据
         getStockCompany() {
             this.$loading("加载中")
@@ -120,15 +124,9 @@ export default {
             this.getStockCompany()
         },
         showCompanyDetail(item) {
-            this.$router.push({
-                path: `/search/${item.ts_code}`,
-                name: "companyDetail",
-                params: {
-                    "ts_code": item.ts_code,
-                    "name": item.name,
-                    "fullname": item.fullname
-                }
-            })
+            // 保存到vuex
+            this.setCompanyData(item);
+            this.$router.push(`/search/${item.id}`);
         },
 
         // search

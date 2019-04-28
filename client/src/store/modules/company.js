@@ -1,12 +1,16 @@
 export default {
     state: {
+        company_id: '',
         name: '',
-        code: ''
+        fullname: '',
+        ts_code: ''
     },
     mutations: {
-        setCompany(state, data) {
+        setCompanyData(state, data) {
+            state.company_id = data.id;
             state.name = data.name;
-            state.code = data.code;
+            state.fullname = data.fullname;
+            state.ts_code = data.ts_code;
         }
     },
     actions: {},

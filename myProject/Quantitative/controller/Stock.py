@@ -8,12 +8,11 @@ import json
 import datetime
 
 
-# """获取stack数据"""
+# 获取stack数据
 def getStockData(request):
     body = json.loads(request.body.decode())
     code = body.get('code')
     start = body.get('start')
-    # start = datetime.datetime(2019, 1, 1)
     end = body.get('end')
 
     print(code, start, end)
@@ -21,10 +20,6 @@ def getStockData(request):
     resp = {
         "success": "ok",
         "data": json.loads(stock.getStockFromHttp())
-    }
-    resp = {
-        "success": "ok",
-        "data": json.loads(stock_data)
     }
     return resp
 
@@ -62,6 +57,14 @@ def getStockCompanyDetail(request):
     }
     return resp
 
+
+
+
+
+
+
+
+# 测试
 def stockDataTest(request):
     stock_data = StockCompany.saveTsCodeWithCompany()
 

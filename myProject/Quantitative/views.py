@@ -23,8 +23,6 @@ def setUserInfo(request):
     return HttpResponse(json.dumps(controller.User.setUserInfo(request)), content_type="application/json")
 
 
-
-
 # 获取Stock数据
 def getStockData(request):
     return HttpResponse(json.dumps(controller.Stock.getStockData(request)), content_type="application/json")
@@ -40,6 +38,15 @@ def getStockCompanyDetail(request):
 def searchStockCompany(request):
     return HttpResponse(json.dumps(controller.Stock.searchStockCompany(request)), content_type="application/json")
 
+# 收藏公司
+def collectionCompany(request):
+    return HttpResponse(json.dumps(controller.CompanyCollection.collectionCompany(request)), content_type="application/json")
+# 查询用户是否收藏该公司
+def isCompanyCollection(request):
+    return HttpResponse(json.dumps(controller.CompanyCollection.isCompanyCollection(request)), content_type="application/json")
+def cancelCollectionCompany(request):
+    return HttpResponse(json.dumps(controller.CompanyCollection.cancelCollectionCompany(request)), content_type="application/json")
+
 # 存储股票数据测试
 def stockDataTest(request):
     return HttpResponse(json.dumps(controller.Stock.stockDataTest(request)), content_type="application/json")
@@ -54,3 +61,6 @@ def strategyTrade(request):
     resp = controller.Stock.strategyTrade(request);
 
     return HttpResponse(json.dumps(resp), content_type="application/json")
+def test(request):
+    print('enter test request')
+    return HttpResponse(json.dumps({"1": "1"}), content_type="application/json")
