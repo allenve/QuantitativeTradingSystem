@@ -26,6 +26,8 @@ urlpatterns = [
     path('collectionCompany', views.collectionCompany, name="post_case"),
     path('isCompanyCollection', views.isCompanyCollection, name="post_case"),
     path('cancelCollectionCompany', views.cancelCollectionCompany, name="post_case"),
+    path('getUserColledCompany', views.getUserCollectCompany, name="post_case"),
+    
     
 
     path('stockDataTest', views.stockDataTest, name='post_case'),

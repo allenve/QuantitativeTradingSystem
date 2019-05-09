@@ -46,6 +46,8 @@ def isCompanyCollection(request):
     return HttpResponse(json.dumps(controller.CompanyCollection.isCompanyCollection(request)), content_type="application/json")
 def cancelCollectionCompany(request):
     return HttpResponse(json.dumps(controller.CompanyCollection.cancelCollectionCompany(request)), content_type="application/json")
+def getUserCollectCompany(request):
+    return HttpResponse(json.dumps(controller.CompanyCollection.getUserCollectCompany(request)), content_type="application/json")
 
 # 存储股票数据测试
 def stockDataTest(request):

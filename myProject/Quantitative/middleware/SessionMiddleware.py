@@ -19,6 +19,7 @@ class SessionMiddleware(MiddlewareMixin):
             # '/api/collectionCompany',
             # '/api/isCompanyCollection',
             # '/api/cancelCollectionCompany',
+            '/api/getUserColledCompany',
             '/api/needlogin'
         ]
         # 需要登录验证

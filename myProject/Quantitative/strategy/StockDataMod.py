@@ -12,17 +12,19 @@ import talib
 #获取股票数据接口
 def GetStockDatApi(stockName=None,stockTimeS=None,stockTimeE=None):
     
-    path = 'C:\programPY\GUI_Inter_StoMPL\StockData'
+    path = '/Users/yupeng12/Desktop/my/GraduationProject/myProject/Quantitative/strategy/StockDataCSV'
     
-    str_stockTimeS = stockTimeS.strftime('%Y-%m-%d')
-    str_stockTimeE = stockTimeE.strftime('%Y-%m-%d')
+    print(stockTimeS)
+    # str_stockTimeS = stockTimeS.strftime('%Y-%m-%d')
+    str_stockTimeS = stockTimeS
+    # str_stockTimeE = stockTimeE.strftime('%Y-%m-%d')
+    str_stockTimeE = stockTimeE
     newname = stockName+'+'+str_stockTimeS+'+'+str_stockTimeE+'.csv'
     newpath = os.path.join(path,newname)
     
     #path=os.path.abspath('.')#获取当前脚本所在的路径 C:\Program Files\Notepad++
     print(u"当前:%s" % os.getcwd())#当前工作目录
     os.chdir(path)
-    print(u"修改为:%s" % os.getcwd())#修改后工作目录
    
     for filename in os.listdir(path):#遍历路径下所有文件
         #print(os.path.join(path,filename))
@@ -31,9 +33,10 @@ def GetStockDatApi(stockName=None,stockTimeS=None,stockTimeE=None):
             if filename.count('+') == 2:#存在CSV文件
                 str_dfLoadTimeS = filename.split('+')[1]
                 str_dfLoadTimeE = filename.split('+')[2].split('.')[0]
-
                 dtm_dfLoadTimeS = datetime.datetime.strptime(str_dfLoadTimeS,'%Y-%m-%d') 
                 dtm_dfLoadTimeE = datetime.datetime.strptime(str_dfLoadTimeE,'%Y-%m-%d')
+                stockTimeS = datetime.datetime.strptime(stockTimeS,'%Y-%m-%d')
+                stockTimeE = datetime.datetime.strptime(stockTimeE,'%Y-%m-%d')
                 
                 if((dtm_dfLoadTimeS - stockTimeS).days <= 0)and((dtm_dfLoadTimeE - stockTimeE).days >= 0):#起止日期在文件内则读取CSV文件获取数据
                     print("123",(dtm_dfLoadTimeS - stockTimeS).days)
@@ -60,9 +63,9 @@ def GetStockDatPro(stockName=None,stockTimeS=None,stockTimeE=None):
         stockPro = GetStockDatApi(stockName, stockTimeS, stockTimeE)
 
         #处理移动平均线
-        stockPro['Ma20'] = pd.rolling_mean(stockPro.Close,window=20)
-        stockPro['Ma60'] = pd.rolling_mean(stockPro.Close,window=60)
-        stockPro['Ma120'] = pd.rolling_mean(stockPro.Close,window=120)
+        stockPro['Ma20'] = stockPro.Close.rolling(window=20).mean() #pd.rolling_mean(stockPro.Close,window=20)
+        stockPro['Ma60'] = stockPro.Close.rolling(window=60).mean() #pd.rolling_mean(stockPro.Close,window=60)
+        stockPro['Ma120'] = stockPro.Close.rolling(window=120).mean() #pd.rolling_mean(stockPro.Close,window=120)
         
         #处理MACD
         stockPro['macd_dif'],stockPro['macd_dea'], stockPro['macd_bar'] = talib.MACD(stockPro['Close'].values, fastperiod=12, slowperiod=26, signalperiod=9)

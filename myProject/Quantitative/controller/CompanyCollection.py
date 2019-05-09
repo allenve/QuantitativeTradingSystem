@@ -45,3 +45,16 @@ def isCompanyCollection(request):
         "data": resp[1]
     }
     return res_data
+
+def getUserCollectCompany(request):
+    body = json.loads(request.body.decode())
+    user_id = body.get('user_id')
+    limit = body.get('limit')
+    pageNum = body.get('pageNum')
+    resp = CompanyCollection.getUserCollectCompany(user_id, limit, pageNum)
+
+    res_data = {
+        "code": resp[0],
+        "data": resp[1]
+    }
+    return res_data

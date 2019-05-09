@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .. modules import Stock, StockCompany
+from .. strategy import StockDataMod
 from .QuantAverBreak import QuantAverBreak
 from .QuantTrendBreak import QuantTrendBreak
 import json
@@ -11,17 +12,17 @@ import datetime
 # 获取stack数据
 def getStockData(request):
     body = json.loads(request.body.decode())
-    code = body.get('code')
+    code_name = body.get('code')
     start = body.get('start')
     end = body.get('end')
+    
+    stockData = StockDataMod.GetStockDatPro(code_name, start, end);
 
-    print(code, start, end)
-    stock = Stock.Stock(code, start, end)
-    resp = {
-        "success": "ok",
-        "data": json.loads(stock.getStockFromHttp())
+    return {
+        "code": 200,
+        "data": json.loads(stockData.to_json(orient="index"))
     }
-    return resp
+
 
 def getStockCompany(request):
     body = json.loads(request.body.decode())

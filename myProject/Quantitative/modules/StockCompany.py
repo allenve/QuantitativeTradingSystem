@@ -48,7 +48,7 @@ def getStockCompany(list_status, limit, pagenum):
     status = list_status or 'L'
     company_list = []
     try:
-        company_lists = StockCompany.objects.all()[limit*(pagenum-1):limit*pagenum]
+        company_lists = StockCompany.objects.all()[int(limit)*(int(pagenum)-1):int(limit)*int(pagenum)]
         # company_lists = StockCompany.objects.all()[0:limit]
         count = StockCompany.objects.count()
         for company in company_lists:
@@ -130,7 +130,6 @@ def searchStockCompanyByTsCode(ts_code):
     except Exception as e:
         print(e)
         return [201, {"msg": str(e)}]
-
 
 
 

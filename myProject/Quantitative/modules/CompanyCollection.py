@@ -52,3 +52,28 @@ def isCollectionCompany(user_id, company_id):
         print(e)
         return [201, {"msg": str(e)}]
 
+# 获取用户的收藏列表
+def getUserCollectCompany(user_id, limit, pagenum):
+    company_list = []
+    try:
+        list = CompanyCollection.objects.filter(user_id=user_id)[limit*(pagenum-1):limit*pagenum]
+        count = list.count()
+        for item in list:
+            json_dict = {}
+            json_dict["company_id"] = str(item.company_id)
+            json_dict["ts_code"] = str(item.ts_code)
+            json_dict["company_name"] = str(item.company_name)
+            json_dict["createTime"] = item.createTime.strftime('%Y-%m-%d')
+            company_list.append(json_dict)
+
+        res_company_data = {
+            "list":  company_list,
+            "count": count,
+            "nowPage": pagenum
+        }
+        return [200, res_company_data]
+
+    except Exception as e:
+        print(e)
+        return [201, {"msg": str(e)}]
+
