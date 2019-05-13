@@ -19,6 +19,7 @@ export default {
     name: 'collectionWrapper',
     data () {
         return {
+            userData: null,
             company_columns: [
                 {
                     title: '名称', 
@@ -31,13 +32,15 @@ export default {
                                 }
                             }, params.row.company_name)
                         ]);
-                    }},
+                    }
+                },
+                {title: '公司全称', key: 'fullname'},
                 {title: '股票代码', key: 'ts_code'},
                 {title: '收藏时间', key: 'createTime'},
                 {
                     title: '操作', 
                     align: 'center',
-                    width: 150,
+                    width: 250,
                     render: (h, params) => {
                         return h('div', [
                             h('Button', {
@@ -46,14 +49,29 @@ export default {
                                     size: 'small'
                                 },
                                 style: {
-                                    padding: '3px 10px'
+                                    padding: '3px 10px',
+                                    marginRight: '10px'
                                 },
                                 on: {
                                     click: () => {
                                         this.showCompanyDetail(params.row)
                                     }
                                 }
-                            }, '查看详情')
+                            }, '查看详情'),
+                            h('Button', {
+                                props: {
+                                    type: 'warning',
+                                    size: 'small'
+                                },
+                                style: {
+                                    padding: '3px 10px'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.cancelCollectedThisCompany(params.row)
+                                    }
+                                }
+                            }, '取消收藏')
                         ])
                     }
                 }
@@ -66,21 +84,28 @@ export default {
 
     components: {},
     created() {
-        this.loadCollectedList().then(response => {
-            this.collection_list = response.list;
-        })
+        this.userData = this.$getUserInfo();
+    },
+
+    mounted () {
+        if (this.userData) {
+            this.$loading('加载中。。。');
+            this.loadCollectedList().then(response => {
+                this.collection_list = response.list;
+            })
+        }
+        
     },
 
     methods: {
         loadCollectedList() {
             const payload = {
-                user_id: this.$getUserInfo().id,
+                user_id: this.userData.id,
                 pageNum: this.pagenum,
                 limit: 10
             }
             return this.$api.post('/api/getUserColledCompany', payload).then(res => {
-                res.code === 200 ? this.$Message.success('success') : this.$Message.error(res.data.msg);
-                return res.code === 200 ? res.data : [];
+                return res;
             })
         },
         changePage() {},
@@ -88,16 +113,32 @@ export default {
             setCompanyData: 'setCompanyData'
         }),
         showCompanyDetail(item) {
-            // 保存到vuex
-            console.log(item);
             const row = {
                 id: item.company_id,
                 name: item.company_name,
-                ts_code: item.ts_code
+                ts_code: item.ts_code,
+                fullname: item.fullname
             }
+            // 保存到vuex
             this.setCompanyData(row);
             this.$router.push(`/search/${item.company_id}`);
         },
+        cancelCollectedThisCompany(item) {
+            this.$loading('正在取消');
+            const payload = {
+                user_id: this.userData.id,
+                company_id: item.company_id
+            };
+            this.$api.post('/api/cancelCollectionCompany', payload).then(res => {
+                this.$Message.success('成功取消收藏');
+                setTimeout(() => this.reload(), 0);
+            });
+        },
+        reload() {
+            this.loadCollectedList().then(response => {
+            this.collection_list = response.list;
+        })
+        }
     }
 
 }

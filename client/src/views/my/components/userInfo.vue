@@ -34,19 +34,21 @@ export default {
             username: '',
             nickname: '',
             navList: [
-                {name: '我的信息', link: '/my/userInfo/detail', icon: 'my'},
-                {name: '我的收藏', link: '/my/userInfo/collect', icon: 'collect'},
-                {name: '设置', link: '/my/userInfo/setting', icon: 'setting'}
+                {name: '我的信息', link: '/my/detail', icon: 'my'},
+                {name: '我的收藏', link: '/myCollection', icon: 'collect'},
+                {name: '设置', link: '/my/setting', icon: 'setting'}
             ]
         };
     },
 
     components: {},
 
-    mounted() {
+    created () {
         let user_data = this.$getUserInfo();
-        this.username = user_data.username;
-        this.nickname = user_data.nickname
+        if (user_data) {
+            this.username = user_data.username;
+            this.nickname = user_data.nickname
+        }
         
     },
 }

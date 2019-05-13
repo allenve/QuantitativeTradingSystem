@@ -25,7 +25,6 @@
                 @on-change="changePage"
                 show-total />
         </div>
-        <router-view />
     </div>
 </template>
 
@@ -98,13 +97,13 @@ export default {
         }),
         // api 获取公司列表数据
         getStockCompany() {
-            this.$loading("加载中")
+            this.$loading("加载中");
             let req = {
                 limit: 10,
                 pagenum: this.pagenum
-            }
+            };
             this.$api.post('/api/getStockCompany', req).then(res => {
-                res.code == 200 ? this.initStockCompany(res.data) : this.$Message.error(res.data.msg);
+                this.initStockCompany(res);
             })
         },
 
@@ -115,7 +114,7 @@ export default {
                 return item;
             })
             this.count = data.count;
-            this.$closeToast()
+            this.$closeToast();
         },
 
         // 分页
@@ -138,12 +137,9 @@ export default {
                 "name": this.companyNameKeyWord
             }
             this.$api.post('/api/searchStockCompany', payload).then(res => {
-                res.code == 200 ? this.getSearchValue(res.data) : this.$Message.error(res.data.msg)
-            })
-        },
-        getSearchValue(data) {
-            this.companyNameList = [];
-            this.companyNameList = data.company_list
+                this.companyNameList = [];
+                this.companyNameList = res.company_list
+            });
         }
     },
 

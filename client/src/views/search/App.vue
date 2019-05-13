@@ -4,6 +4,7 @@
         <div class="search-wrapper">
             <h3>即时查询</h3>
             <mainWrapper />
+            <router-view />
         </div>
     </div>
 </template>

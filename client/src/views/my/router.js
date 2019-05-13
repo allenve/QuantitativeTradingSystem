@@ -1,7 +1,6 @@
 import App from './App.vue'
-import register from './components/register.vue'
-import login from './components/login.vue'
-import userInfo from './components/userInfo.vue'
+import login from './components/login';
+import register from './components/register';
 import userInfoDetail from './components/userComponents/userInfoDetail.vue'
 import userInfoCollect from './components/userComponents/userInfoCollect.vue'
 import userInfoSetting from './components/userComponents/userInfoSetting.vue'
@@ -10,42 +9,34 @@ export default [
     {
         path: '/my',
         name: 'my',
-        redirect: '/my/userInfo',
+        redirect: '/my/detail',
         component: App,
         children: [
             {
-                path: '/my/register',
-                name: 'register',
-                component: register
+                path: '/my/detail',
+                name: 'userInfoDetail',
+                component: userInfoDetail
             },
             {
-                path: '/my/login',
-                name: 'login',
-                component: login
+                path: '/my/collect',
+                name: 'userInfoCollect',
+                component: userInfoCollect
             },
             {
-                path: '/my/userInfo',
-                redirect: '/my/userInfo/detail',
-                name: 'userInfo',
-                component: userInfo,
-                children: [
-                    {
-                        path: '/my/userInfo/detail',
-                        name: 'userInfoDetail',
-                        component: userInfoDetail
-                    },
-                    {
-                        path: '/my/userInfo/collect',
-                        name: 'userInfoCollect',
-                        component: userInfoCollect
-                    },
-                    {
-                        path: '/my/userInfo/setting',
-                        name: 'userInfoSetting',
-                        component: userInfoSetting
-                    },
-                ]
-            }
+                path: '/my/setting',
+                name: 'userInfoSetting',
+                component: userInfoSetting
+            },
         ]
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: login,
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: register,
     }
 ]

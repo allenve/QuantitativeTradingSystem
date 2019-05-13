@@ -106,14 +106,12 @@ export default {
     },
 
     components: {},
-    mounted() {
+    created() {
         this.setUserInfo(this.$getUserInfo());
     },
     methods: {
         showChangeWrapper() {
             this.userInfoModal = true;
-            console.log("showChangeWrapper");
-            console.log(this.city);
             this.cityArr = this.city.split(",")
         },
         changeUserInfo() {
@@ -128,9 +126,7 @@ export default {
                 signature: this.signature
             }
             this.$api.post('/api/setUserInfo', req).then(res => {
-                console.log(res);
-                this.$closeToast();
-                res.code == 200 ? this.changeSuccess(res.data.data) : this.$Message.error(res.data.msg);
+                this.changeSuccess(res.data);
             })
         },
         setUserInfo(user_data) {

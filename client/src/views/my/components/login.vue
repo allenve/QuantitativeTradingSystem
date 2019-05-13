@@ -45,20 +45,18 @@ export default {
             }
             this.$loading('登录中。。。')
             this.$api.post("/api/login", req).then(res => {
-                this.$closeToast();
-                console.log(res);
-                res.code == 200 ? this.loginSuccess(res.data.data) : this.$Message.error(res.data.msg);
+                this.loginSuccess(res.data);
             })
         },
         toRegister() {
-            this.$router.push("/my/register")
+            this.$router.push("/register")
         },
         loginSuccess(user_data) {
             this.$Message.success('登录成功');
             this.setUserInfo(user_data);
             sessionStorage.setItem('user_data', JSON.stringify(user_data))
 
-            let redirectHref = '/my/userInfo';
+            let redirectHref = '/my/detail';
             if (this.$route.fullPath.indexOf("?") !== -1 && this.$route.fullPath.indexOf('redirect') !== -1) {
                 console.log("redirect href");
                 redirectHref = decodeURIComponent(this.$route.fullPath.split("?")[1].split("=")[1]);
@@ -77,6 +75,13 @@ export default {
 
 <style scoped lang='less'>
 .login{
+    margin-top: 50px;
+    text-align: center;
+    font-size: 13px;
+    h3 {
+        font-size: 15px;
+        
+    }
     .input-wrapper {
         width: auto;
         padding: 20px 30px;
@@ -96,8 +101,12 @@ export default {
             }
         }
         .input-wrapper-btn {
+            margin-top: 20px;
             input {
                 cursor: pointer;
+                width: 80px;
+                padding: 10px 15px;
+                margin: 0 10px;
             }
         }
     }

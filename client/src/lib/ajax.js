@@ -24,19 +24,30 @@ ajax.interceptors.request.use(config => {
 ajax.interceptors.response.use(response => {
   let res = response.data
   if (response.status === 200) {
-    if (res.code == 2001) {
-      alert(res.data.msg);
-      sessionStorage.clear();
-      window.location.replace('#/my/login');
+    Vue.prototype.$closeToast();
+    if (res.code === 200) {
+      return Promise.resolve(res.data);
+    }else {
+      // 未登录
+      if (res.code == 2001) {
+        alert(res.data.msg);
+        sessionStorage.clear();
+        Vue.prototype.$router.push('/login');
+      }else {
+        Vue.prototype.$Message.error(res.data.msg);
+        Promise.reject();
+      }
     }
-    return Promise.resolve(res)
+    
     
   } else {
     alert('error')
     return Promise.resolve()
   }
 }, err => {
-  return Promise.reject(err)
+  Vue.prototype.$closeToast();
+  Vue.prototype.$Message.error('服务器错误');
+  return Promise.reject(err);
 })
 
 export default {

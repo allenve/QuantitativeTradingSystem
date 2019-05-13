@@ -2,20 +2,22 @@
 <template>
     <div class="my">
         <div class="wrapper">
-            <!-- <h3>登录/注册</h3> -->
-            <router-view />
+            <user-info />
         </div>
     </div>
 </template>
 
 <script>
+import userInfo from './components/userInfo'
 export default {
     name: 'App',
     data () {
         return {
         };
     },
-    components: {},
+    components: {
+        userInfo
+    },
 
     methods: {
     },

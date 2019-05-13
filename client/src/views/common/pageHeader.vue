@@ -23,17 +23,25 @@
                 type: Boolean,
                 default: true
             },
+            backUrl: {
+                type: String,
+                default: null
+            },
             overLoadBackClick: {
                 type: Boolean,
                 default: true
-            }
+            },
         },
 
         components: {},
 
         methods: {
             back() {
-                this.overLoadBackClick && this.$routerBack();
+                if (this.backUrl) {
+                    this.router.push(this.backUrl);
+                } else {
+                    this.overLoadBackClick && this.$routerBack();
+                }
             }
         },
 

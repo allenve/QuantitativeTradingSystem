@@ -5,7 +5,8 @@ export default [
     {
         path: '/search',
     	name: "search",
-    	component: App,
+        component: App,
+        keepAlive: true,
         children: [
             {
                 path: '/search/:id',

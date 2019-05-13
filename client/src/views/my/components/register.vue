@@ -76,8 +76,8 @@ export default {
                 
                 this.$loading('注册中。。。')
                 this.$api.post("/api/register", req).then(res => {
-                    this.$closeToast();
-                    this.registerSuccess(res.data)
+                    this.$Message.success(`${res.msg}，即将返回登录`);
+                    setTimeout(() => this.toLogin(), 1000);
                 })
             } else {
                 this.$Message.error('两次输入密码不一致')
@@ -86,13 +86,7 @@ export default {
            
         },
         toLogin() {
-            this.$router.push("/my/login");
-        },
-        registerSuccess(data) {
-            this.$Message.success(data.msg);
-        },
-        registerFail(data) {
-            this.$Message.error(data.msg);
+            this.$router.push("/login");
         }
     },
 
@@ -102,6 +96,12 @@ export default {
 
 <style scoped lang='less'>
 .register{
+    text-align: center;
+    font-size: 13px;
+    margin-top: 50px;
+    h3 {
+        font-size: 15px;   
+    }
     .input-wrapper {
         padding: 20px 30px;
         .input-wrapper-list {
@@ -121,12 +121,13 @@ export default {
             
         }
         .input-wrapper-btn {
+            margin-top: 20px;
             input {
                 cursor: pointer;
-                border: none;
-                height: 28px;
-                color: #fff;
+                width: 80px;
+                padding: 10px 15px;
                 margin: 0 10px;
+                color: #fff;
                 &.input-wrapper-btn-register { 
                     background-color: @btn-color-1;
                 }

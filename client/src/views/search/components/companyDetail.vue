@@ -2,13 +2,14 @@
 <template>
     <div class='companyDetail'>
         <div class="companyDetail-wrapper">
-            <page-header class="header" @click.native="back" :overLoadBackClick="false">
+            <page-header class="header">
                 <b class="company-name">{{company_name}}</b>详细信息
             </page-header>
             <div class="companyDetial-opr">
                 <div class="collection">
                     <Button :type="isCollection ? 'info' : ''" 
                         class="collection-button" 
+                        :loading="isCollectionButtonDisabled"
                         icon="md-heart"
                         @click="collectionCompany">
                         <span v-if="!isCollection">收藏</span>
@@ -64,6 +65,7 @@ export default {
             companyData: {},
             companyDataList: [],
             isCollection: false,
+            isCollectionButtonDisabled: true,
             isShowKChart: false,
             startTime: new Date(Date.now() - DAY * 365 * 5), //默认开始时间 五年前
             endTime: new Date(Date.now()), // 默认结束时间
@@ -99,14 +101,13 @@ export default {
         if (!this.company_id) {
             this.$router.back();
         }else {
-            this.$loading('加载中。。。')
-
+            // this.$loading('加载中。。。')
             this.$api.post('/api/getStockCompanyDetail', {"ts_code": this.company_ts_code})
             .then(res => {
-                res.code == 200 ? this.initData(Object.assign({}, {
+                this.initData(Object.assign({}, {
                     company_name: this.company_name,
                     company_fullname: this.company_fullname
-                }, res.data)) : this.$Message.error(res.data.msg);
+                }, res));
             })
             .then(() => {
                 this.isCompanyCollection();
@@ -121,9 +122,6 @@ export default {
     },
 
     methods: {
-        back() {
-            this.$router.push('/search');
-        },
         initData(data) {
             let companyDataList = [];
             this.companyData = data;
@@ -150,7 +148,8 @@ export default {
                     company_id: this.company_id
                 })
                 this.$api.post('/api/isCompanyCollection', payload).then(res => {
-                    if (res.data.isCollection) {
+                    this.isCollectionButtonDisabled = false;
+                    if (res.isCollection) {
                         this.isCollection = true;
                     }
                 })
@@ -165,7 +164,8 @@ export default {
                 username: user_data.username,
                 company_name: this.company_name,
                 company_id: this.company_id,
-                ts_code: this.company_ts_code
+                ts_code: this.company_ts_code,
+                fullname: this.company_fullname
             }
 
             // 取消收藏
@@ -173,9 +173,11 @@ export default {
                 req_url = '/api/cancelCollectionCompany';
             }
 
+            this.isCollectionButtonDisabled = true;
             this.$api.post(req_url, payload).then(res => {
-                res.code == 200 ? this.$Message.success(res.data.msg) : this.$Message.error(res.data.msg);
-                this.isCollection = res.data.isCollection;
+                this.$Message.success(res.msg)
+                this.isCollection = res.isCollection;
+                this.isCollectionButtonDisabled = false;
             })
             
         },
@@ -196,7 +198,7 @@ export default {
             this.$loading();
             this.$api.post('/api/getStockData', req).then(res => {
                 console.log(res);
-                this.showChart(this.initStockData(res.data))
+                this.showChart(this.initStockData(res))
                 this.$closeToast();
             })
 

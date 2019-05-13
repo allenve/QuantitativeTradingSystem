@@ -71,9 +71,12 @@ export default {
     height: 100%;
     // margin-top: 200px;
     position: absolute;
-    top: 0;
+    // left: 0;
+    // right: 0;
+    // top: 0;
+    // bottom: 0;
     z-index: 10;
-    overflow: scroll;
+    overflow-y: auto;
     .main-title {
         margin-top: 200px;
         width: 100%;
