@@ -35,13 +35,5 @@ class SessionMiddleware(MiddlewareMixin):
                     }
                 }
                 return HttpResponse(json.dumps(resp), content_type="application/json")
-        # 不需要登录验证
-        # else:
         response = self.get_response(request)
         return response
-        # session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
-        # request.session = self.SessionStore(session_key)
-
-    # def process_response(self, request, response):
-    #     print("SessionMiddleware: process_response")
-    #     return HttpResponse(response)

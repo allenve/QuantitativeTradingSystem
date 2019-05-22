@@ -148,12 +148,12 @@ export default {
                     company_id: this.company_id
                 })
                 this.$api.post('/api/isCompanyCollection', payload).then(res => {
-                    this.isCollectionButtonDisabled = false;
                     if (res.isCollection) {
                         this.isCollection = true;
                     }
                 })
             }
+            this.isCollectionButtonDisabled = false;
             
         },
         collectionCompany() {

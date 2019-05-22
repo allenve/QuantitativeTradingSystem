@@ -53,6 +53,10 @@ def stockDataTest(request):
     return HttpResponse(json.dumps(controller.Stock.stockDataTest(request)), content_type="application/json")
 
 # 回测
+def runStrategy(request):
+    return HttpResponse(json.dumps(controller.RunStrategy.runStrategy(request)), content_type="application/json")
+
+
 def loopBack(request):
     runLoopBack = controller.RunLoopBack.RunLoopBack(request)
     return HttpResponse(json.dumps(runLoopBack.runLoopBack(request)), content_type="application/json")

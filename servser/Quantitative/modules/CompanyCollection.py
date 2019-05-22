@@ -58,7 +58,11 @@ def isCollectionCompany(user_id, company_id):
 def getUserCollectCompany(user_id, limit, pagenum):
     company_list = []
     try:
-        list = CompanyCollection.objects.filter(user_id=user_id)[limit*(pagenum-1):limit*pagenum]
+        list = []
+        if limit and pagenum:
+            list = CompanyCollection.objects.filter(user_id=user_id)[limit*(pagenum-1):limit*pagenum]
+        else:
+            list = CompanyCollection.objects.filter(user_id=user_id)
         count = list.count()
         for item in list:
             json_dict = {}

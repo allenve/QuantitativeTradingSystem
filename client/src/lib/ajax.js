@@ -22,7 +22,7 @@ ajax.interceptors.request.use(config => {
 })
 // 注册响应拦截器
 ajax.interceptors.response.use(response => {
-  let res = response.data
+  let res = response.data;
   if (response.status === 200) {
     Vue.prototype.$closeToast();
     if (res.code === 200) {
@@ -35,8 +35,8 @@ ajax.interceptors.response.use(response => {
         Vue.prototype.$router.push('/login');
       }else {
         Vue.prototype.$Message.error(res.data.msg);
-        Promise.reject();
       }
+      return Promise.reject();
     }
     
     

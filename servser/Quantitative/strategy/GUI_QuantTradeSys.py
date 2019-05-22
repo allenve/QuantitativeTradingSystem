@@ -237,6 +237,8 @@ class Frame(wx.Frame):
 
         #获取策略名称
         self.pickstrate_Val = self.pickstrate_CMBO.GetString(self.pickstrate_CMBO.GetSelection())
+        print('self.pickstrate_Val:=========================>')
+        print(self.pickstrate_Val)
         self.reFlashLoop()
         
     def PstockpEvent(self,event):

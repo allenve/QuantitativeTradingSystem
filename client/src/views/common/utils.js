@@ -32,3 +32,7 @@ export const COMPANYDETAILLIST = new Enum(
     {alias: 'main_business', text: '主要业务及产品'},
     {alias: 'business_scope', text: '经营范围'},
 )
+
+export const FACTORS = new Enum(
+    {alias: 'DoubleTrendFusion', text: '双趋势融合策略'}
+)
