@@ -28,6 +28,7 @@ module.exports = {
     'vuex': 'Vuex',
     'axios': 'axios',
     'iview': 'iview',
+    'lodash': 'lodash',
     'echarts': 'echarts'
   },
   resolve: {

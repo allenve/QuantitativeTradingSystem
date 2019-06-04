@@ -4,11 +4,11 @@
         <div class="main-title">
             <h3>多因子量化投资管理系统</h3>
             <h4>"沪深股票"、"国内上市公司"实时查询</h4>
-            <h4>多种量化交易策略</h4>
+            <h4>多因子量化交易策略</h4>
             <h4>随时 · 随地 · 洞悉全局</h4>
             <div class="buttons">
                 <input type="button" @click="routerToSearch" value="即时查询">
-                <input type="button" value="历史回测">
+                <input type="button" @click="routerToBackTest" value="历史回测">
             </div>
         </div>
         <div class="wrapper">
@@ -57,7 +57,10 @@ export default {
 
     methods: {
         routerToSearch() {
-            this.$router.push("/search")
+            this.$router.push("/search");
+        },
+        routerToBackTest() {
+            this.$router.push("/backtest");
         }
     },
 
@@ -139,6 +142,11 @@ export default {
                 }
             }
         }
+    }
+    .footer {
+        padding: 20px;
+        text-align: center;
+        color:  #fff;
     }
 }
 </style>

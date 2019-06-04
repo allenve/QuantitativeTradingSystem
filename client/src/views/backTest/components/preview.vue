@@ -15,7 +15,6 @@
                 <div><span class="name">开始时间：</span><span>{{strategyData.start}}</span></div>
                 <div><span class="name">结束时间：</span><span>{{strategyData.end}}</span></div>
                 <div><span class="name">股票代码：</span><span>{{strategyData.selectedCompany}}</span></div>
-                <div><span class="name">策略：</span><span>{{strategyData.selectedFactors | getFactorText}}</span></div>
             </div>      
         </div>
         <div class="echart-wrapper">
@@ -70,13 +69,6 @@
             lineChart
         },
 
-        filters: {
-            getFactorText(val) {
-                
-                return val && FACTORS.getTextFromAlias(val);
-            }
-        },
-
         methods: {
             getStrategyData(payload) {
                 this.$loading("策略运行中")
@@ -88,6 +80,7 @@
                 this.mainLineData = null;
                 this.profitLineData = null;
                 this.benchmarkTrendLineData = null;
+                this.orderInfo = null;
                 if (data) {
                     this.strategyData = data;
                     this.getStrategyData(data).then(res => {
@@ -141,7 +134,7 @@
                 });
 
                 this.mainLineData = {
-                    title: '..',
+                    title: '概览',
                     xAxisData: xAxisData,
                     seriesData: [
                         {
@@ -236,7 +229,9 @@
         }
         .info {
             font-size: 12px;
-            padding: 10px 20px;
+            padding: 20px 0;
+            margin: 0 20px;
+            border-bottom: 1px solid #eee;
             h3 {
                 height: 30px;
                 line-height: 30px;

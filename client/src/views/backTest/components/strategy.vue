@@ -22,7 +22,7 @@
                     <p class="notice">注：股池仅展示我收藏的公司</p>
                     <div class="wrapper-item-content-select">
                         <span>股池：</span>
-                        <Select v-model="selectedCompany" size="small" style="width:400px">
+                        <Select v-model="selectedCompany" size="small" style="width:500px">
                             <Option v-for="(item, i) in stockData" 
                                 :key="i" :value="item.ts_code" 
                                 :label="item.company_name">
@@ -36,11 +36,23 @@
             <!-- 策略选择 -->
             <div class="wrapper-item">
                 <h4>策略选择：</h4>
-                <div class="wrapper-item-content">
+                <div class="wrapper-item-content factors-wrapper">
+                    <p class="notice">注：买入卖出策略暂无法更改</p>
                     <div class="wrapper-item-content-select">
-                        <span>策略：</span>
-                        <Select v-model="selectedFactors" size="small" style="width:400px">
-                            <Option v-for="(item, i) in factors" 
+                        <span>买入策略：</span>
+                        <Select v-model="buySelectFactors" multiple disabled size="small" style="width:500px">
+                            <Option v-for="(item, i) in buyFactors" 
+                                :key="i" 
+                                :value="item.alias"
+                                :label="item.text">
+                                <span>{{item.text}}</span>
+                            </Option>
+                        </Select>
+                    </div>
+                    <div class="wrapper-item-content-select">
+                        <span>卖出策略：</span>
+                        <Select v-model="sellSelectFactors" multiple disabled size="small" style="width:500px">
+                            <Option v-for="(item, i) in sellFactors" 
                                 :key="i" 
                                 :value="item.alias"
                                 :label="item.text">
@@ -51,7 +63,7 @@
                 </div>
             </div>
             <div class="wrapper-button">
-                <Button type="primary" @click="submitStrategy">确定</Button>
+                <Button type="primary" :disabled="sureButtonDisable" @click="submitStrategy">确定</Button>
                 <Button type="warning" @click="cancle">取消</Button>
             </div>
         </div>
@@ -60,7 +72,8 @@
 
 <script>
     const DAY = 86400000;
-    import { FACTORS } from '../../common/utils.js';
+    import { FACTORS,BUY_FACTORS, SELL_FACTROS } from '../../common/utils.js';
+    import _ from 'lodash';
 
     export default {
         name: 'strategy',
@@ -70,9 +83,13 @@
                 startTime: new Date(Date.now() - DAY * 365 * 1 - DAY * 30), // 默认开始时间
                 endTime: new Date(Date.now() - DAY * 30), //默认结束时间
                 factors: FACTORS.toArray(), // 策略
-                selectedFactors: '',
+                buyFactors: BUY_FACTORS.toArray(),
+                buySelectFactors: _.map(BUY_FACTORS.toArray(), 'alias'),
+                sellFactors: SELL_FACTROS.toArray(),
+                sellSelectFactors: _.map(SELL_FACTROS.toArray(), 'alias'),
                 stockData: [],
                 selectedCompany: '', // 股池
+                sureButtonDisable: true
             };
         },
 
@@ -82,8 +99,10 @@
             this.userData = this.$getUserInfo();
             this.userData && this.loadCollectedList();
         },
-        mounted () {
-            
+        watch: {
+            selectedCompany(com) {
+                com.length === 0 ? (this.sureButtonDisable = true) : (this.sureButtonDisable = false);
+            }
         },
         methods: {
             loadCollectedList() {
@@ -97,11 +116,11 @@
             },
             submitStrategy() {
                 let strategData = {
+                    company_name: this.selectedCompany,
                     read_cash: this.initialFunding,
                     start: this.$getLocalTime(this.startTime, true),
                     end: this.$getLocalTime(this.endTime, true),
-                    selectedCompany: this.selectedCompany,
-                    selectedFactors: this.selectedFactors
+                    selectedCompany: this.selectedCompany
                 }
                 this.$emit("closeStrategyDrawer", strategData)
             },
@@ -131,7 +150,9 @@
                     padding: 10px 20px;
                     display: flex;
                     flex-wrap: wrap;
-
+                    // &.factors-wrapper {
+                    //     min-height: 200px;
+                    // }
                     .wrapper-item-content-list {
                         padding: 10px;
                         width: calc(100%/3);

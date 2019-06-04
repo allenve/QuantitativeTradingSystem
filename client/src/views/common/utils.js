@@ -33,6 +33,16 @@ export const COMPANYDETAILLIST = new Enum(
     {alias: 'business_scope', text: '经营范围'},
 )
 
+export const BUY_FACTORS = new Enum(
+    {alias: 'FactorBuyNdayBreak', text: 'N日趋势突破策略', value: 'FactorBuyNdayBreak'},
+    {alias: 'FactorBuyAverBreak', text: '单均线突破策略', value: 'FactorBuyAverBreak'}
+)
+
+export const SELL_FACTROS = new Enum(
+    {alias: 'FactorSellNdayBreak', text: 'N日趋势突破策略', value: 'FactorSellNdayBreak'},
+    {alias: 'FactorSellAverBreak', text: '单均线突破策略', value: 'FactorSellAverBreak'},
+    {alias: 'FactorSellAtrStop', text: 'ATR止盈止损风险策略', value: 'FactorSellAtrStop'}
+)
 export const FACTORS = new Enum(
     {alias: 'DoubleTrendFusion', text: '双趋势融合策略'}
 )
