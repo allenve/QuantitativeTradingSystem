@@ -10,8 +10,6 @@ def runStrategy(request):
     code = body.get('selectedCompany')
     start = body.get('start')
     end = body.get('end')
-    # read_cash = body.get('read_cash')
-    # factors = body.get('selectedFactors')
 
     # 获取股票数据
     df_stockload = GetStockDatPro(code, start, end)

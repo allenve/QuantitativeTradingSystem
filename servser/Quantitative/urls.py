@@ -4,7 +4,7 @@ from django.urls import path, include
 from .import views
 
 urlpatterns = [
-    path('index/', views.index),
+    path('index', views.index),
 
     # User
     path('register', views.register, name='post_case'),
