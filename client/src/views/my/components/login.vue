@@ -9,7 +9,7 @@
             </div>
             <div class="input-wrapper-list">
                 <span>密码:</span>
-                <input type="text" placeholder="密码" v-model="password">
+                <input type="password" placeholder="密码" v-model="password">
             </div>
             <div class="input-wrapper-btn">
                 <input type="button" value="登录" @click="login">

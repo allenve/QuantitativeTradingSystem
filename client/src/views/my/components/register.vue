@@ -13,11 +13,11 @@
             </div>
             <div class="input-wrapper-list">
                 <span>密码:</span>
-                <input type="text" placeholder="密码" v-model="password">
+                <input type="password" placeholder="密码" v-model="password">
             </div>
             <div class="input-wrapper-list">
                 <span>确认密码:</span>
-                <input type="text" placeholder="确认密码" v-model="surepassword">
+                <input type="password" placeholder="确认密码" v-model="surepassword">
             </div>
             <div class="input-wrapper-btn">
                 <input class="input-wrapper-btn-register" type="button" value="立即注册" @click="register">

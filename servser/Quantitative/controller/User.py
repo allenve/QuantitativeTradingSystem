@@ -13,6 +13,8 @@ def register(request):
     email = body.get('email')
     
     return models.register(username, email, password)
+
+    
     
 # 登录
 def login(request):
