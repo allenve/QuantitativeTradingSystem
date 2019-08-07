@@ -103,7 +103,7 @@ def searchStockCompanyByName(name):
         return [201, {"msg": str(e)}]
 
 
-# 通过股票代码或许公司相信信息
+# 通过股票代码获取公司相信信息
 def searchStockCompanyByTsCode(ts_code):
     try:
         company_data = StockCompanyDetail.objects.get(ts_code=ts_code)
@@ -137,7 +137,7 @@ def searchStockCompanyByTsCode(ts_code):
 
 
 
-# 或许数据并存储到数据库
+# 获取数据并存储到数据库
 import tushare as ts
 ts.set_token('bb72e0cc0b36f9a154fae491cd4a06f71986d609c787c801dc7b3086')
 
